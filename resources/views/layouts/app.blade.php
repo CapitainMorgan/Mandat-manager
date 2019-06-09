@@ -98,5 +98,10 @@
             @yield('content')
         </main>
     </div>
+    <div>
+        <main class="py-4 container">
+            @yield('content-novue')
+        </main>
+    </div>
 </body>
 </html>

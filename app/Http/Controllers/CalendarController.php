@@ -13,7 +13,24 @@ class CalendarController extends Controller
  */
     public function index()
     {
-        return view('calendar');
+        //https://github.com/maddhatter/laravel-fullcalendar
+        $events = [];
+
+        $events[] = \Calendar::event(
+            "Event one", //event title
+            true, //full day event
+            '2017-01-02T0900', //START TIME
+            '2017-01-06T0800', //END TIME
+            0//Event id
+        );
+
+        $calendar = \Calendar::addEvents($events)
+                    ->setOptions([
+                        'firstDay' => 1
+        ]);
+
+
+        return view('calendar', array('calendar' => $calendar));
     }
     
 }
