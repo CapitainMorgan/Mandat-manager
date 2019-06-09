@@ -35,6 +35,11 @@ class MandatController extends Controller
 
     public function create()
     {
+        return view('mandate.create',[]);
+    }
+
+    public function store()
+    {
 
     }
 
@@ -42,7 +47,7 @@ class MandatController extends Controller
     {
 
     }
-    
+
     public function delete()
     {
 
