@@ -17,11 +17,25 @@ class CalendarController extends Controller
         $events = [];
 
         $events[] = \Calendar::event(
-            "Event one", //event title
-            true, //full day event
-            '2017-01-02T0900', //START TIME
-            '2017-01-06T0800', //END TIME
+            "Finir le projet", //event title
+            false, //full day event
+            '2019-07-01T0800', //START TIME
+            '2019-07-08T0900', //END TIME
             0//Event id
+        );
+
+        $events[] = \Calendar::event(
+            "Finir ", //event title
+            false, //full day event
+            '2019-07-02T0800', //START TIME
+            '2019-07-07T0900', //END TIME
+            1,//Event id
+            [
+                'color' => '#888888',
+                'url' => '#',
+                'description' => "Event Description",
+                'textColor' => '#0A0A0A'
+            ]
         );
 
         $calendar = \Calendar::addEvents($events)
