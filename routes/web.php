@@ -16,6 +16,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/mandate', 'MandatController@index')->name('mandat');
-Route::get('/mandate/{n}', 'MandatController@index')->where('n', '[0-9]+');
+Route::get('/mandate/{n}', 'MandatController@show')->where('n', '[0-9]+');
 Route::get('/mandate/create', 'MandatController@create')->name('mandat_create');
+Route::post('/mandate/store', 'MandatController@store')->name('mandat_store');
 Route::get('/calendar', 'CalendarController@index')->name('calendar');
