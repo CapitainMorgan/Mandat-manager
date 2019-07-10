@@ -2,8 +2,6 @@
 
 @section('content')
 
-  <info-mandate></info-mandate>
+  <info-mandate mandate_param="{{ $mandate }}"></info-mandate>
 
-    {{ $mandate->name }}<br>
-    {{ $mandate->comment}}
 @endsection

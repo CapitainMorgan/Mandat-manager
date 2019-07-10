@@ -39,21 +39,60 @@
 </template>
 
 <script>
+import moment from 'moment'
 
 export default {
+    props: ['mandate_param'],
     data() {
             return {
+                id: '',
                 name: '',
                 start: '',
                 end: '',
                 description: '',
                 file: [],
                 showAlert: false,
+                modify: false
             }
         },
+        created : function(){
+          if(this.mandate_param)
+          {
+            this.modify = true;
+            let my_var = JSON.parse(this.mandate_param);
+            this.id = my_var.id;
+            this.name = my_var.name;
+            this.start = this.dataFilter(my_var.start);
+            this.end = this.dataFilter(my_var.end);
+            this.description = my_var.comment;
+          }
+        },
         methods: {
+            dataFilter(value)
+            {
+              if (value) {
+                  return moment(String(value)).format('YYYY-MM-DD')
+                }
+            },
             submit() {
+                if(this.modify){
+                  let formData = new FormData();
 
+                  formData.append('id', this.id)
+                  formData.append('name', this.name);
+                  formData.append('start', this.start);
+                  formData.append('end', this.end);
+                  formData.append('description', this.description);
+                  formData.append('files', this.file);
+
+                  axios.post('/mandate/update', formData, {
+                      headers: {
+                          'Content-Type': 'multipart/form-data'
+                      }
+                  }).then(response => {
+                      this.showAlert = true;
+                  });
+                }else{
                     let formData = new FormData();
 
 
@@ -74,6 +113,7 @@ export default {
                     }).then(response => {
                         this.showAlert = true;
                     });
+                    }
                 },
                 formatNames(files) {
                     if (files.length === 1) {
