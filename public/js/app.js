@@ -84213,7 +84213,7 @@ var render = function() {
     { staticClass: "container" },
     [
       _c("b-alert", { attrs: { show: _vm.showAlert, dismissible: "" } }, [
-        _vm._v("\n        Mandat créé.\n      ")
+        _vm._v("\r\n        Mandat créé.\r\n      ")
       ]),
       _vm._v(" "),
       _c(
