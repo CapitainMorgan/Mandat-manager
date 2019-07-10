@@ -19,3 +19,4 @@ Route::get('/mandate', 'MandatController@index')->name('mandat');
 Route::get('/mandate/{n}', 'MandatController@index')->where('n', '[0-9]+');
 Route::get('/mandate/create', 'MandatController@create')->name('mandat_create');
 Route::get('/calendar', 'CalendarController@index')->name('calendar');
+Route::get('/mandate/share/{idUser}/{idMandate}', 'MandatController@share')->where('idUser','[0-9]+')->where('idMandate','[0-9]+');

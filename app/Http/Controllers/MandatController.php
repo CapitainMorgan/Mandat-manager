@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Mandate;
+use Illuminate\Support\Facades\DB;
+use App\Mandate;use App\Workon;
 
 class MandatController extends Controller
 {
@@ -30,7 +31,6 @@ class MandatController extends Controller
             'question' => $question,
             'made' => $made,
         ]);
-
     }
 
     public function create()
@@ -40,7 +40,14 @@ class MandatController extends Controller
 
     public function store()
     {
+        
+    }
 
+    public function share($idUser,$idMandate)
+    {
+        DB::table('workon')->insert(
+            ['idMandate' => $idMandate, 'idUser'  => $idUser]
+        );
     }
 
     public function edit()
