@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <show-mandate></show-mandate>
+    {{ $mandate->name }}<br>
+    {{ $mandate->comment}}
 @endsection

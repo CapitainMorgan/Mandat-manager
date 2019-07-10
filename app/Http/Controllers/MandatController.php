@@ -22,14 +22,12 @@ class MandatController extends Controller
         ]);
     }
 
-    public function show($n)
+    public function show($mandate_id)
     {
-        $quiz = current(Mandate::all()->where('id',$n)->toArray());
+        $mandate = Mandate::where('id',$mandate_id)->get();
 
         return view('mandate.show',[
-            'quiz' => $quiz,
-            'question' => $question,
-            'made' => $made,
+            'mandate' => $mandate,
         ]);
     }
 
@@ -38,9 +36,19 @@ class MandatController extends Controller
         return view('mandate.create',[]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        
+      $datas = $request->all();
+
+      $mandate = new Mandate;
+      $mandate->name = $datas['name'];
+      $mandate->start = $datas['start'];
+      $mandate->end = $datas['end'];
+      $mandate->comment = $datas['description'];
+
+      $mandate->save();
+
+      return json_encode(true);
     }
 
     public function share($idUser,$idMandate)

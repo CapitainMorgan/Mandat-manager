@@ -1897,10 +1897,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1908,8 +1904,38 @@ __webpack_require__.r(__webpack_exports__);
       start: '',
       end: '',
       description: '',
-      file: Array()
+      file: [],
+      showAlert: false
     };
+  },
+  methods: {
+    submit: function submit() {
+      var _this = this;
+
+      var formData = new FormData();
+      this.file.forEach(function (single_file, i) {
+        formData.append('files[' + i + ']', single_file);
+      });
+      formData.append('name', this.name);
+      formData.append('start', this.start);
+      formData.append('end', this.end);
+      formData.append('description', this.description);
+      formData.append('files', this.file);
+      axios.post('/mandate/store', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
+        _this.showAlert = true;
+      });
+    },
+    formatNames: function formatNames(files) {
+      if (files.length === 1) {
+        return files[0].name;
+      } else {
+        return "".concat(files.length, " fichiers s\xE9l\xE9ctionn\xE9");
+      }
+    }
   }
 });
 
@@ -84186,8 +84212,20 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _c("b-alert", { attrs: { show: _vm.showAlert, dismissible: "" } }, [
+        _vm._v("\n        Mandat créé.\n      ")
+      ]),
+      _vm._v(" "),
       _c(
         "b-form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submit($event)
+            }
+          }
+        },
         [
           _c(
             "b-form-group",
@@ -84254,11 +84292,11 @@ var render = function() {
                   _c("b-form-input", {
                     attrs: { id: "endDate", type: "date" },
                     model: {
-                      value: _vm.start,
+                      value: _vm.end,
                       callback: function($$v) {
-                        _vm.start = $$v
+                        _vm.end = $$v
                       },
-                      expression: "start"
+                      expression: "end"
                     }
                   })
                 ],
@@ -84298,13 +84336,16 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-form-group",
-            { attrs: { label: "Image(s)", id: "image" } },
+            {
+              attrs: { label: "Image(s) (pas encore fonctionnel)", id: "image" }
+            },
             [
               _c("b-form-file", {
                 attrs: {
+                  "file-name-formatter": _vm.formatNames,
                   multiple: "",
                   placeholder: "Ajouter une image",
-                  "drop-placeholder": "Drop file here..."
+                  accept: "image/*"
                 },
                 model: {
                   value: _vm.file,
