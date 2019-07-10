@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\WorkTime;
 
 class CalendarController extends Controller
 {
@@ -14,43 +16,25 @@ class CalendarController extends Controller
     public function index()
     {
         //https://github.com/maddhatter/laravel-fullcalendar
+
+        $worktimes = DB::table('worktime')->where('idUser',auth()->user()->id)->get();
+        
         $events = [];
-
-        $events[] = \Calendar::event(
-            "Finir le projet", //event title
-            false, //full day event
-            '2019-07-01T0800', //START TIME
-            '2019-07-01T0900', //END TIME
-            0//Event id
-        );
-
-        $events[] = \Calendar::event(
-            "Finir ", //event title
-            false, //full day event
-            '2019-07-03T0815', //START TIME
-            '2019-07-03T0930', //END TIME
-            1,//Event id
-            [
-                'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
-                'url' => '#',
-                'description' => "Event Description",
-                'textColor' => '#0A0A0A'
-            ]
-        );
-
-        $events[] = \Calendar::event(
-            "Evenement 1", //event title
-            false, //full day event
-            '2019-07-03T0800', //START TIME
-            '2019-07-03T1200', //END TIME
-            2,//Event id
-            [
-                'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
-                'url' => '#',
-                'description' => "Event Description",
-                'textColor' => '#0A0A0A'
-            ]
-        );
+        
+        foreach($worktimes as $worktime)
+        {
+            $events[] = \Calendar::event(
+                $worktime->comment, //event title
+                false, //full day event
+                \Carbon\Carbon::parse($worktime->start)->format("Y-m-dTHi"), //START TIME
+                \Carbon\Carbon::parse($worktime->end)->format("Y-m-dTHi"), //END TIME
+                [
+                    'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+                    'url' => 'mandate/'.$worktime->idMandate,
+                    'textColor' => '#0A0A0A'
+                ]
+            );
+        }        
 
         $calendar = \Calendar::addEvents($events)
                     ->setOptions([
