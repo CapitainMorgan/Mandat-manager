@@ -23,7 +23,7 @@ class MandatController extends Controller
 
     public function show($mandate_id)
     {
-        $mandate = Mandate::where('id',$mandate_id)->get();
+        $mandate = Mandate::where('id',$mandate_id)->first();
 
         return view('mandate.show',[
             'mandate' => $mandate,
