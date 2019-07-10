@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Mandate;
+use Illuminate\Support\Facades\DB;
+use App\Mandate;use App\Workon;
 
 class MandatController extends Controller
 {
@@ -14,7 +15,7 @@ class MandatController extends Controller
      */
     public function index()
     {
-        $mandate = Mandate::all();
+        $mandate = Mandate::join('workon','id','=','workon.idMandate')->where("workon.idUser","=",auth()->user()->id)->get();
 
         return view('mandate.mandates',[
             'mandate' => $mandate,
@@ -28,7 +29,6 @@ class MandatController extends Controller
         return view('mandate.show',[
             'mandate' => $mandate,
         ]);
-
     }
 
     public function create()
@@ -48,8 +48,18 @@ class MandatController extends Controller
 
       $mandate->save();
 
-      return json_encode(true);
+      DB::table('workon')->insert(
+        ['idMandate' => $mandate->id, 'idUser'  => auth()->user()->id]
+        );
 
+      return json_encode(true);
+    }
+
+    public function share($user_id,$mandate_id)
+    {
+        DB::table('workon')->insert(
+            ['idMandate' => $mandate_id, 'idUser'  => $user_id]
+        );
     }
 
     public function edit()

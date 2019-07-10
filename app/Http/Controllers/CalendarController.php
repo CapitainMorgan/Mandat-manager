@@ -20,18 +20,32 @@ class CalendarController extends Controller
             "Finir le projet", //event title
             false, //full day event
             '2019-07-01T0800', //START TIME
-            '2019-07-08T0900', //END TIME
+            '2019-07-01T0900', //END TIME
             0//Event id
         );
 
         $events[] = \Calendar::event(
             "Finir ", //event title
             false, //full day event
-            '2019-07-02T0800', //START TIME
-            '2019-07-07T0900', //END TIME
+            '2019-07-03T0815', //START TIME
+            '2019-07-03T0930', //END TIME
             1,//Event id
             [
-                'color' => '#888888',
+                'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
+                'url' => '#',
+                'description' => "Event Description",
+                'textColor' => '#0A0A0A'
+            ]
+        );
+
+        $events[] = \Calendar::event(
+            "Evenement 1", //event title
+            false, //full day event
+            '2019-07-03T0800', //START TIME
+            '2019-07-03T1200', //END TIME
+            2,//Event id
+            [
+                'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
                 'url' => '#',
                 'description' => "Event Description",
                 'textColor' => '#0A0A0A'

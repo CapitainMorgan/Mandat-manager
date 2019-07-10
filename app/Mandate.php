@@ -8,5 +8,5 @@ class Mandate extends Model
 {
     protected $table = 'mandate';
 
-    protected $fillable = ['name', 'start','end','comment'];
+    protected $fillable = ['id','name', 'start','end','comment'];
 }
