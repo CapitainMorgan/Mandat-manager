@@ -30,7 +30,7 @@ class CalendarController extends Controller
                 \Carbon\Carbon::parse($worktime->end)->format("Y-m-dTHi"), //END TIME
                 [
                     'color' => sprintf('#%06X', mt_rand(0, 0xFFFFFF)),
-                    'url' => 'mandate/'.$worktime->idMandate,
+                    'url' => '#',
                     'textColor' => '#0A0A0A'
                 ]
             );
@@ -40,7 +40,6 @@ class CalendarController extends Controller
                     ->setOptions([
                         'firstDay' => 1
         ]);
-
 
         return view('calendar', array('calendar' => $calendar));
     }

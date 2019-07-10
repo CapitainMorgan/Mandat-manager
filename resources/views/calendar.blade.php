@@ -6,6 +6,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 
+    <button class="btn btn-dark mb-2">Ajouter un temps de travail</button>
     {!! $calendar->calendar() !!}
     {!! $calendar->script() !!}
+    
 @endsection

@@ -71,4 +71,19 @@ class MandatController extends Controller
     {
 
     }
+
+    public function createPrice()
+    {
+
+    }
+
+    public function editPrice($price_id)
+    {
+
+    }
+
+    public function addWorktime($user_id,$mandate_id,$price_id)
+    {
+        
+    }
 }
