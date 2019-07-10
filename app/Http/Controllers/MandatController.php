@@ -62,9 +62,29 @@ class MandatController extends Controller
         );
     }
 
-    public function edit()
+    public function modify($mandate_id)
     {
+      $mandate = Mandate::where('id',$mandate_id)->first();
 
+      return view('mandate.modify',[
+          'mandate' => $mandate,
+      ]);
+
+    }
+
+    public function update(Request $request)
+    {
+      $datas = $request->all();
+
+      $mandate = Mandate::where('id',$datas['id'])->first();
+      $mandate->name = $datas['name'];
+      $mandate->start = $datas['start'];
+      $mandate->end = $datas['end'];
+      $mandate->comment = $datas['description'];
+
+      $mandate->save();
+
+      return json_encode(true);
     }
 
     public function delete()
