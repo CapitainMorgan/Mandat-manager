@@ -1,29 +1,49 @@
 <template>
     <div class="container"> 
-        <FullCalendar defaultView="month,agendaWeek,agendaDay,listWeek" :plugins="bootstrapPlugins" />
+        <FullCalendar
+        ref="fullCalendar"    
+        defaultView="dayGridMonth" 
+        :plugins="calendarPlugins" 
+        :events="events"
+        :header="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
+        }"
+        locale="fr"
+        firstDay="1"
+        />
     </div>
-</template>¨
+</template>
 
 <style lang='scss'>
 
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
-@import '~@fullcalendar/bootstrap/main.css'
+@import "~@fullcalendar/timegrid/main.css";
 
 </style>
 
 <script>
+    import FullCalendar  from '@fullcalendar/vue';
+    import dayGridPlugin from '@fullcalendar/daygrid';
+    import timeGridPlugin from "@fullcalendar/timegrid";
+    import interactionPlugin from "@fullcalendar/interaction";
+    import listPlugin from '@fullcalendar/list';
 
-import FullCalendar  from '@fullcalendar/vue';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
     export default {
-        components: {
+        
+        components: {            
             FullCalendar
         },
         data() {
             return {
-                bootstrapPlugins: [bootstrapPlugin]
+                calendarPlugins: [dayGridPlugin,timeGridPlugin,interactionPlugin,listPlugin],
+                events : [],                
             }
-        }
+        },
+        mounted() {
+            axios.get('/events').then(response => (this.events) = response.data.events);
+        },
     }
 </script>

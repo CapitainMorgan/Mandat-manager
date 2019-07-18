@@ -23,3 +23,4 @@ Route::post('/mandate/store', 'MandatController@store')->name('mandat_store');
 Route::post('/mandate/update', 'MandatController@update')->name('mandat_update');
 Route::get('/calendar', 'CalendarController@index')->name('calendar');
 Route::get('/mandate/share/{user_id}/{mandate_id}', 'MandatController@share')->where('user_id','[0-9]+')->where('mandate_id','[0-9]+');
+Route::get('/events', "CalendarController@events");
