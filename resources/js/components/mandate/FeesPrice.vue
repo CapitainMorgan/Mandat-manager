@@ -3,39 +3,60 @@
 <template>
 
 <div class="container mt-2">
-    <b-row>
-        <b-col>
-            <b-card header="Ajouter un prix">
-                <b-card-text>
-                    <b-form @submit.prevent="submitPrice()">
-                        <b-form-group id="input-group-1" label="Prix :" label-for="input-price" description="Entrez votre prix">
-                            <b-form-input id="input-price" v-model="form.price.value" type="number" required step="0.05"></b-form-input>
+    <b-card header="Ajouter du temps de travail :">
+        <b-card-text>
+            <b-form @submit.prevent="submitFees()">
+                <b-row>
+                    <b-col>
+                        <b-form-group id="input-group-1" label="Début :" label-for="input-worktime-start" description="Entrez le début de votre temps de travail">
+                            <b-form-input id="input-worktime-start" v-model="form.worktime.start" type="datetime-local" required></b-form-input>
                         </b-form-group>
-                        <b-form-group id="input-group-2" label="Nom :" label-for="input-price-name" description="Entrez le nom de ce tarif">
-                            <b-form-input id="input-price-name" v-model="form.price.name" type="text"></b-form-input>
+                    </b-col>
+                    <b-col>
+                        <b-form-group id="input-group-1" label="Fin :" label-for="input-worktime-end" description="Entrez la fin de votre temps de travail">
+                            <b-form-input id="input-worktime-end" v-model="form.worktime.end" type="datetime-local" required></b-form-input>
                         </b-form-group>
-                        <b-button class="mt-2" variant="primary" type="submit">Ajouter</b-button>
-                    </b-form>
+                    </b-col>
+                </b-row>
+                <label for="textarea">Commentaire :</label>
+                <b-form-textarea id="textarea" v-model="form.worktime.comment" placeholder="Entrez un commentaire" rows="3" max-rows="6"></b-form-textarea>
 
-                </b-card-text>
-            </b-card>
-        </b-col>
-        <b-col>
-            <b-card header="Ajouter un frais">
-                <b-card-text>
-                <b-form @submit.prevent="submitFees()">
-                    <b-form-group id="input-group-1" label="Prix :" label-for="input-fees" description="Entrez vos frais">
-                        <b-form-input id="input-fees" v-model="form.fees.value" type="number" required step="0.05"></b-form-input>
+                <b-button v-on:click="addFees()" class="mt-2">Ajouter un frais</b-button>
+
+                <div v-for="fee in form.worktime.fees">
+                  <b-row class="border mt-2">
+                  <b-col >
+                    <b-form-group id="input-group-1" label="Frais :" label-for="input-price" description="Entrez votre prix">
+                        <b-form-input id="input-price" v-model="fee.value" type="number" required step="0.05"></b-form-input>
                     </b-form-group>
-                    <b-form-group id="input-group-2" label="Nom :" label-for="input-fees-name" description="Entrez la raison du frais">
-                        <b-form-input id="input-fees-name" v-model="form.fees.name" type="text"></b-form-input>
+                    </b-col>
+                    <b-col>
+                    <b-form-group id="input-group-2" label="Nom :" label-for="input-price-name" description="Entrez le nom de ce tarif">
+                        <b-form-input id="input-price-name" v-model="fee.name" type="text"></b-form-input>
                     </b-form-group>
-                    <b-button class="mt-2" variant="primary" type="submit">Ajouter au temps de travail</b-button>
-                </b-form>
-                </b-card-text>
-            </b-card>
-        </b-col>
-    </b-row>
+                    </b-col>
+                    </b-row>
+                </div>
+                <b-button class="mt-2" variant="primary" type="submit">Ajouter du temps de travail</b-button>
+            </b-form>
+        </b-card-text>
+    </b-card>
+
+
+    <b-card header="Ajouter un prix" class="mt-2">
+        <b-card-text>
+            <b-form @submit.prevent="submitPrice()">
+                <b-form-group id="input-group-1" label="Prix :" label-for="input-price" description="Entrez votre prix">
+                    <b-form-input id="input-price" v-model="form.price.value" type="number" required step="0.05"></b-form-input>
+                </b-form-group>
+                <b-form-group id="input-group-2" label="Nom :" label-for="input-price-name" description="Entrez le nom de ce tarif">
+                    <b-form-input id="input-price-name" v-model="form.price.name" type="text"></b-form-input>
+                </b-form-group>
+                <b-button class="mt-2" variant="primary" type="submit">Ajouter</b-button>
+            </b-form>
+
+        </b-card-text>
+    </b-card>
 </div>
 
 </template>
@@ -45,20 +66,33 @@
 import moment from 'moment'
 
 export default {
-data(){
-  return {
-    form : {
-      price : {
-        value : '',
-        name : '',
-      },
-      fees: {
-        value: '',
-        name : '',
-      },
-    }
-  }
-}
+    data() {
+            return {
+                form: {
+                    price: {
+                        value: '',
+                        name: '',
+                    },
+                    worktime: {
+                        start: '',
+                        end: '',
+                        comment: '',
+                        fees: [],
+                        fees_number: 0,
+                    },
+                }
+            }
+        },
+        methods: {
+            addFees: function() {
+                this.form.worktime.fees.push({
+                    value: '',
+                    name: ''
+                });
+
+                this.form.worktime.fees_number++;
+            }
+        }
 
 }
 

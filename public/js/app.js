@@ -1974,6 +1974,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1983,12 +2004,24 @@ __webpack_require__.r(__webpack_exports__);
           value: '',
           name: ''
         },
-        fees: {
-          value: '',
-          name: ''
+        worktime: {
+          start: '',
+          end: '',
+          comment: '',
+          fees: [],
+          fees_number: 0
         }
       }
     };
+  },
+  methods: {
+    addFees: function addFees() {
+      this.form.worktime.fees.push({
+        value: '',
+        name: ''
+      });
+      this.form.worktime.fees_number++;
+    }
   }
 });
 
@@ -2005,9 +2038,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
 //
 //
 //
@@ -83540,194 +83570,317 @@ var render = function() {
     { staticClass: "container mt-2" },
     [
       _c(
-        "b-row",
+        "b-card",
+        { attrs: { header: "Ajouter du temps de travail :" } },
         [
           _c(
-            "b-col",
+            "b-card-text",
             [
               _c(
-                "b-card",
-                { attrs: { header: "Ajouter un prix" } },
+                "b-form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.submitFees()
+                    }
+                  }
+                },
                 [
                   _c(
-                    "b-card-text",
+                    "b-row",
                     [
                       _c(
-                        "b-form",
-                        {
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.submitPrice()
-                            }
-                          }
-                        },
+                        "b-col",
                         [
                           _c(
                             "b-form-group",
                             {
                               attrs: {
                                 id: "input-group-1",
-                                label: "Prix :",
-                                "label-for": "input-price",
-                                description: "Entrez votre prix"
+                                label: "Début :",
+                                "label-for": "input-worktime-start",
+                                description:
+                                  "Entrez le début de votre temps de travail"
                               }
                             },
                             [
                               _c("b-form-input", {
                                 attrs: {
-                                  id: "input-price",
-                                  type: "number",
-                                  required: "",
-                                  step: "0.05"
+                                  id: "input-worktime-start",
+                                  type: "datetime-local",
+                                  required: ""
                                 },
                                 model: {
-                                  value: _vm.form.price.value,
+                                  value: _vm.form.worktime.start,
                                   callback: function($$v) {
-                                    _vm.$set(_vm.form.price, "value", $$v)
+                                    _vm.$set(_vm.form.worktime, "start", $$v)
                                   },
-                                  expression: "form.price.value"
+                                  expression: "form.worktime.start"
                                 }
                               })
                             ],
                             1
-                          ),
-                          _vm._v(" "),
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-col",
+                        [
                           _c(
                             "b-form-group",
                             {
                               attrs: {
-                                id: "input-group-2",
-                                label: "Nom :",
-                                "label-for": "input-price-name",
-                                description: "Entrez le nom de ce tarif"
+                                id: "input-group-1",
+                                label: "Fin :",
+                                "label-for": "input-worktime-end",
+                                description:
+                                  "Entrez la fin de votre temps de travail"
                               }
                             },
                             [
                               _c("b-form-input", {
-                                attrs: { id: "input-price-name", type: "text" },
+                                attrs: {
+                                  id: "input-worktime-end",
+                                  type: "datetime-local",
+                                  required: ""
+                                },
                                 model: {
-                                  value: _vm.form.price.name,
+                                  value: _vm.form.worktime.end,
                                   callback: function($$v) {
-                                    _vm.$set(_vm.form.price, "name", $$v)
+                                    _vm.$set(_vm.form.worktime, "end", $$v)
                                   },
-                                  expression: "form.price.name"
+                                  expression: "form.worktime.end"
                                 }
                               })
                             ],
                             1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-button",
-                            {
-                              staticClass: "mt-2",
-                              attrs: { variant: "primary", type: "submit" }
-                            },
-                            [_vm._v("Ajouter")]
                           )
                         ],
                         1
                       )
                     ],
                     1
+                  ),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "textarea" } }, [
+                    _vm._v("Commentaire :")
+                  ]),
+                  _vm._v(" "),
+                  _c("b-form-textarea", {
+                    attrs: {
+                      id: "textarea",
+                      placeholder: "Entrez un commentaire",
+                      rows: "3",
+                      "max-rows": "6"
+                    },
+                    model: {
+                      value: _vm.form.worktime.comment,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form.worktime, "comment", $$v)
+                      },
+                      expression: "form.worktime.comment"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-2",
+                      on: {
+                        click: function($event) {
+                          return _vm.addFees()
+                        }
+                      }
+                    },
+                    [_vm._v("Ajouter un frais")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.form.worktime.fees, function(fee) {
+                    return _c(
+                      "div",
+                      [
+                        _c(
+                          "b-row",
+                          { staticClass: "border mt-2" },
+                          [
+                            _c(
+                              "b-col",
+                              [
+                                _c(
+                                  "b-form-group",
+                                  {
+                                    attrs: {
+                                      id: "input-group-1",
+                                      label: "Frais :",
+                                      "label-for": "input-price",
+                                      description: "Entrez votre prix"
+                                    }
+                                  },
+                                  [
+                                    _c("b-form-input", {
+                                      attrs: {
+                                        id: "input-price",
+                                        type: "number",
+                                        required: "",
+                                        step: "0.05"
+                                      },
+                                      model: {
+                                        value: fee.value,
+                                        callback: function($$v) {
+                                          _vm.$set(fee, "value", $$v)
+                                        },
+                                        expression: "fee.value"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-col",
+                              [
+                                _c(
+                                  "b-form-group",
+                                  {
+                                    attrs: {
+                                      id: "input-group-2",
+                                      label: "Nom :",
+                                      "label-for": "input-price-name",
+                                      description: "Entrez le nom de ce tarif"
+                                    }
+                                  },
+                                  [
+                                    _c("b-form-input", {
+                                      attrs: {
+                                        id: "input-price-name",
+                                        type: "text"
+                                      },
+                                      model: {
+                                        value: fee.name,
+                                        callback: function($$v) {
+                                          _vm.$set(fee, "name", $$v)
+                                        },
+                                        expression: "fee.name"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-2",
+                      attrs: { variant: "primary", type: "submit" }
+                    },
+                    [_vm._v("Ajouter du temps de travail")]
                   )
                 ],
-                1
+                2
               )
             ],
             1
-          ),
-          _vm._v(" "),
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-card",
+        { staticClass: "mt-2", attrs: { header: "Ajouter un prix" } },
+        [
           _c(
-            "b-col",
+            "b-card-text",
             [
               _c(
-                "b-card",
-                { attrs: { header: "Ajouter un frais" } },
+                "b-form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.submitPrice()
+                    }
+                  }
+                },
                 [
                   _c(
-                    "b-card-text",
+                    "b-form-group",
+                    {
+                      attrs: {
+                        id: "input-group-1",
+                        label: "Prix :",
+                        "label-for": "input-price",
+                        description: "Entrez votre prix"
+                      }
+                    },
                     [
-                      _c(
-                        "b-form",
-                        {
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.submitFees()
-                            }
-                          }
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "input-price",
+                          type: "number",
+                          required: "",
+                          step: "0.05"
                         },
-                        [
-                          _c(
-                            "b-form-group",
-                            {
-                              attrs: {
-                                id: "input-group-1",
-                                label: "Prix :",
-                                "label-for": "input-fees",
-                                description: "Entrez vos frais"
-                              }
-                            },
-                            [
-                              _c("b-form-input", {
-                                attrs: {
-                                  id: "input-fees",
-                                  type: "number",
-                                  required: "",
-                                  step: "0.05"
-                                },
-                                model: {
-                                  value: _vm.form.fees.value,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form.fees, "value", $$v)
-                                  },
-                                  expression: "form.fees.value"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-form-group",
-                            {
-                              attrs: {
-                                id: "input-group-2",
-                                label: "Nom :",
-                                "label-for": "input-fees-name",
-                                description: "Entrez la raison du frais"
-                              }
-                            },
-                            [
-                              _c("b-form-input", {
-                                attrs: { id: "input-fees-name", type: "text" },
-                                model: {
-                                  value: _vm.form.fees.name,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.form.fees, "name", $$v)
-                                  },
-                                  expression: "form.fees.name"
-                                }
-                              })
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "b-button",
-                            {
-                              staticClass: "mt-2",
-                              attrs: { variant: "primary", type: "submit" }
-                            },
-                            [_vm._v("Ajouter au temps de travail")]
-                          )
-                        ],
-                        1
-                      )
+                        model: {
+                          value: _vm.form.price.value,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form.price, "value", $$v)
+                          },
+                          expression: "form.price.value"
+                        }
+                      })
                     ],
                     1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-form-group",
+                    {
+                      attrs: {
+                        id: "input-group-2",
+                        label: "Nom :",
+                        "label-for": "input-price-name",
+                        description: "Entrez le nom de ce tarif"
+                      }
+                    },
+                    [
+                      _c("b-form-input", {
+                        attrs: { id: "input-price-name", type: "text" },
+                        model: {
+                          value: _vm.form.price.name,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form.price, "name", $$v)
+                          },
+                          expression: "form.price.name"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      staticClass: "mt-2",
+                      attrs: { variant: "primary", type: "submit" }
+                    },
+                    [_vm._v("Ajouter")]
                   )
                 ],
                 1
@@ -83816,12 +83969,6 @@ var render = function() {
                   }
                 },
                 [_vm._v("Modifier")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                { staticClass: "mt-2", attrs: { variant: "primary" } },
-                [_vm._v("Ajouter du temps de travail")]
               )
             ],
             1
