@@ -31,6 +31,7 @@ Vue.component('calendar-component', require('./components/CalendarComponent.vue'
 Vue.component('all-mandate', require('./components/mandate/AllMandate.vue').default);
 Vue.component('create-mandate', require('./components/mandate/CreateMandate.vue').default);
 Vue.component('info-mandate', require('./components/mandate/InfoMandate.vue').default);
+Vue.component('fees-price', require('./components/mandate/FeesPrice.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

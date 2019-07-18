@@ -13,6 +13,7 @@
       <b-list-group-item><b>Commentaire :</b> {{mandate.comment}}</b-list-group-item>
     </b-list-group>
     <b-button class="mt-2" variant="primary" :href="'/mandate/modify/'+mandate.id">Modifier</b-button>
+    <b-button class="mt-2" variant="primary">Ajouter du temps de travail</b-button>
     </b-card-text>
   </b-card>
 

@@ -6,7 +6,7 @@
     <b-alert :show="showAlert" dismissible>
         Mandat créé.
       </b-alert>
-
+      <b-button v-if="modify" class="mt-2" variant="primary" :href="'/mandate/'+id">Retour au mandat</b-button>
     <b-form @submit.prevent="submit">
         <b-form-group id="nameInoputGroup" label="Nom" label-for="mandatName">
             <b-form-input id="mandatName" v-model="name">
