@@ -40,11 +40,7 @@
             return {
                 calendarPlugins: [dayGridPlugin,timeGridPlugin,interactionPlugin,listPlugin],
                 noformatEvents :[],
-                events : [{
-                    title: 'The Title',
-                    start: '2019-08-01',
-                    end: '2019-08-02'
-                }],                
+                events : [],                
             }
         },
         mounted() {
