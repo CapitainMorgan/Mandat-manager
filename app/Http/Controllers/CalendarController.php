@@ -30,8 +30,8 @@ class CalendarController extends Controller
         {
             $events[] = array(
                 "title" => $worktime->comment, //event title
-                "start" => \Carbon\Carbon::parse($worktime->start)->format("Y-m-dTH:i:00"), //START TIME
-                "end" => \Carbon\Carbon::parse($worktime->end)->format("Y-m-dTH:i:00"), //END TIME                
+                "start" => \Carbon\Carbon::parse($worktime->start)->format("Y-m-d H:i:00"), //START TIME
+                "end" => \Carbon\Carbon::parse($worktime->end)->format("Y-m-d H:i:00"), //END TIME                
             );
         }        
 

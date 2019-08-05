@@ -39,11 +39,27 @@
         data() {
             return {
                 calendarPlugins: [dayGridPlugin,timeGridPlugin,interactionPlugin,listPlugin],
-                events : [],                
+                noformatEvents :[],
+                events : [{
+                    title: 'The Title',
+                    start: '2019-08-01',
+                    end: '2019-08-02'
+                }],                
             }
         },
         mounted() {
-            axios.get('/events').then(response => (this.events) = response.data.events);
+                var self = this;
+                axios.get('/events').then(response => (self.noformatEvents) = response.data.events).then(function (response) {
+                for(var i = 0;i < self.noformatEvents.length ;i++)
+                {
+                    self.events.push({
+                        title: self.noformatEvents[i].title,
+                        start: self.noformatEvents[i].start,
+                        end: self.noformatEvents[i].end
+                    })
+                }
+            },self);
+            
         },
     }
 </script>
