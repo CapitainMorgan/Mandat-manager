@@ -18,23 +18,24 @@
                         </b-form-group>
                     </b-col>
                 </b-row>
+                <b-form-select v-model="form.worktime.price" :options="prices"></b-form-select>
                 <label for="textarea">Commentaire :</label>
                 <b-form-textarea id="textarea" v-model="form.worktime.comment" placeholder="Entrez un commentaire" rows="3" max-rows="6"></b-form-textarea>
 
                 <b-button v-on:click="addFees()" class="mt-2">Ajouter un frais</b-button>
 
                 <div v-for="fee in form.worktime.fees">
-                  <b-row class="border mt-2">
-                  <b-col >
-                    <b-form-group id="input-group-1" label="Frais :" label-for="input-price" description="Entrez votre prix">
-                        <b-form-input id="input-price" v-model="fee.value" type="number" required step="0.05"></b-form-input>
-                    </b-form-group>
-                    </b-col>
-                    <b-col>
-                    <b-form-group id="input-group-2" label="Nom :" label-for="input-price-name" description="Entrez le nom de ce tarif">
-                        <b-form-input id="input-price-name" v-model="fee.name" type="text"></b-form-input>
-                    </b-form-group>
-                    </b-col>
+                    <b-row class="border mt-2">
+                        <b-col>
+                            <b-form-group id="input-group-1" label="Frais :" label-for="input-price" description="Entrez votre prix">
+                                <b-form-input id="input-price" v-model="fee.value" type="number" required step="0.05"></b-form-input>
+                            </b-form-group>
+                        </b-col>
+                        <b-col>
+                            <b-form-group id="input-group-2" label="Nom :" label-for="input-price-name" description="Entrez le nom de ce tarif">
+                                <b-form-input id="input-price-name" v-model="fee.name" type="text"></b-form-input>
+                            </b-form-group>
+                        </b-col>
                     </b-row>
                 </div>
                 <b-button class="mt-2" variant="primary" type="submit">Ajouter du temps de travail</b-button>
@@ -66,33 +67,40 @@
 import moment from 'moment'
 
 export default {
+    created: function() {
+        axios.get('/price/all').then(response => {
+            this.prices = response.data;
+        });
+    },
     data() {
-            return {
-                form: {
-                    price: {
-                        value: '',
-                        name: '',
-                    },
-                    worktime: {
-                        start: '',
-                        end: '',
-                        comment: '',
-                        fees: [],
-                        fees_number: 0,
-                    },
-                }
-            }
-        },
-        methods: {
-            addFees: function() {
-                this.form.worktime.fees.push({
+        return {
+            prices: [],
+            form: {
+                price: {
                     value: '',
-                    name: ''
-                });
-
-                this.form.worktime.fees_number++;
+                    name: '',
+                },
+                worktime: {
+                    price : '',
+                    start: '',
+                    end: '',
+                    comment: '',
+                    fees: [],
+                    fees_number: 0,
+                },
             }
         }
+    },
+    methods: {
+        addFees: function() {
+            this.form.worktime.fees.push({
+                value: '',
+                name: ''
+            });
+
+            this.form.worktime.fees_number++;
+        }
+    }
 
 }
 

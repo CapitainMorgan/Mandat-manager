@@ -10905,17 +10905,12 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-<<<<<<< HEAD
-!(function webpackMissingModule() { var e = new Error("Cannot find module '@fullcalendar/vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-!(function webpackMissingModule() { var e = new Error("Cannot find module '@fullcalendar/bootstrap'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-=======
 /* harmony import */ var _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fullcalendar/vue */ "./node_modules/@fullcalendar/vue/main.esm.js");
 /* harmony import */ var _fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/bootstrap */ "./node_modules/@fullcalendar/bootstrap/main.js");
 /* harmony import */ var _fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
->>>>>>> ba799feb0f23290bfb0f7301e11755abc90c298e
 //
 //
 //
@@ -10927,29 +10922,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-<<<<<<< HEAD
-//
-//
-//
-=======
->>>>>>> ba799feb0f23290bfb0f7301e11755abc90c298e
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-<<<<<<< HEAD
-    FullCalendar: !(function webpackMissingModule() { var e = new Error("Cannot find module '@fullcalendar/vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())
-  },
-  data: function data() {
-    return {
-      bootstrapPlugins: [!(function webpackMissingModule() { var e = new Error("Cannot find module '@fullcalendar/bootstrap'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())]
-=======
     FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
       bootstrapPlugins: [_fullcalendar_bootstrap__WEBPACK_IMPORTED_MODULE_1___default.a]
->>>>>>> ba799feb0f23290bfb0f7301e11755abc90c298e
     };
   }
 });
@@ -11243,16 +11224,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  created: function created() {
+    var _this = this;
+
+    axios.get('/price/all').then(function (response) {
+      _this.prices = response.data;
+    });
+  },
   data: function data() {
     return {
+      prices: [],
       form: {
         price: {
           value: '',
           name: ''
         },
         worktime: {
+          price: '',
           start: '',
           end: '',
           comment: '',
@@ -42778,8 +42769,6 @@ if(false) {}
 
 /***/ }),
 
-<<<<<<< HEAD
-=======
 /***/ "./node_modules/css-loader/index.js!./node_modules/@fullcalendar/bootstrap/main.css":
 /*!*********************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/@fullcalendar/bootstrap/main.css ***!
@@ -42837,7 +42826,6 @@ exports.push([module.i, "/*!\nFullCalendar Day Grid Plugin v4.2.0\nDocs & Licens
 
 /***/ }),
 
->>>>>>> ba799feb0f23290bfb0f7301e11755abc90c298e
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/lib/loader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CalendarComponent.vue?vue&type=style&index=0&lang=scss&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/lib/loader.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CalendarComponent.vue?vue&type=style&index=0&lang=scss& ***!
@@ -42847,15 +42835,9 @@ exports.push([module.i, "/*!\nFullCalendar Day Grid Plugin v4.2.0\nDocs & Licens
 
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
 // imports
-<<<<<<< HEAD
-exports.i(__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module '-!../../../node_modules/css-loader/index.js!@fullcalendar/core/main.css'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())), "");
-exports.i(__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module '-!../../../node_modules/css-loader/index.js!@fullcalendar/daygrid/main.css'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())), "");
-exports.i(__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module '-!../../../node_modules/css-loader/index.js!@fullcalendar/bootstrap/main.css'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())), "");
-=======
 exports.i(__webpack_require__(/*! -!../../../node_modules/css-loader!@fullcalendar/core/main.css */ "./node_modules/css-loader/index.js!./node_modules/@fullcalendar/core/main.css"), "");
 exports.i(__webpack_require__(/*! -!../../../node_modules/css-loader!@fullcalendar/daygrid/main.css */ "./node_modules/css-loader/index.js!./node_modules/@fullcalendar/daygrid/main.css"), "");
 exports.i(__webpack_require__(/*! -!../../../node_modules/css-loader!@fullcalendar/bootstrap/main.css */ "./node_modules/css-loader/index.js!./node_modules/@fullcalendar/bootstrap/main.css"), "");
->>>>>>> ba799feb0f23290bfb0f7301e11755abc90c298e
 
 // module
 exports.push([module.i, "", ""]);
@@ -92807,7 +92789,7 @@ var render = function() {
     { staticClass: "container" },
     [
       _c("b-alert", { attrs: { show: _vm.showAlert, dismissible: "" } }, [
-        _vm._v("\r\n        Mandat créé.\r\n      ")
+        _vm._v("\n        Mandat créé.\n      ")
       ]),
       _vm._v(" "),
       _vm.modify
@@ -93099,6 +93081,17 @@ var render = function() {
                     ],
                     1
                   ),
+                  _vm._v(" "),
+                  _c("b-form-select", {
+                    attrs: { options: _vm.prices },
+                    model: {
+                      value: _vm.form.worktime.price,
+                      callback: function($$v) {
+                        _vm.$set(_vm.form.worktime, "price", $$v)
+                      },
+                      expression: "form.worktime.price"
+                    }
+                  }),
                   _vm._v(" "),
                   _c("label", { attrs: { for: "textarea" } }, [
                     _vm._v("Commentaire :")
@@ -106050,8 +106043,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\App\laragon\www\Mandat-Manager\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\App\laragon\www\Mandat-Manager\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\Mandat-manager\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\Mandat-manager\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

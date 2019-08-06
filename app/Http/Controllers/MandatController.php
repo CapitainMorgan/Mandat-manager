@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Mandate;use App\Workon;
+use App\Mandate;
+use App\Workon;
+use App\Price;
 
 class MandatController extends Controller
 {
@@ -92,6 +94,13 @@ class MandatController extends Controller
 
     }
 
+    public function getPrice()
+    {
+      $prices = Price::all();
+
+      return json_encode($prices);
+    }
+
     public function createPrice()
     {
 
@@ -104,6 +113,6 @@ class MandatController extends Controller
 
     public function addWorktime($user_id,$mandate_id,$price_id)
     {
-        
+
     }
 }
