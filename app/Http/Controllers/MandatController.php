@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Mandate;
 use App\Workon;
 use App\Price;
+use App\Fees;
+use App\WorkTime;
 
 class MandatController extends Controller
 {
@@ -111,8 +113,39 @@ class MandatController extends Controller
 
     }
 
-    public function addWorktime($user_id,$mandate_id,$price_id)
+    public function addWorktime(Request $request)
     {
+      $datas = $request->all();
+
+      $worktime = new WorkTime();
+
+      $worktime_d = $datas['worktime'];
+
+      $fees = [];
+      $price = Price::where('id',$worktime_d['price'])->first();
+      $worktime->idMandate = $datas['mandate_id'];
+      $worktime->idUser = 1;
+      $worktime->idPrice = $price->id;
+      $worktime->start = str_replace('T', ' ',$worktime_d['start']);
+      $worktime->end = str_replace('T', ' ',$worktime_d['end']);
+      $worktime->comment = $worktime_d['comment'];
+
+      $worktime->save();
+
+      if($worktime_d['fees_number'] > 0)
+      {
+
+        for($i = 0; $i<$worktime_d['fees_number']; $i++)
+        {
+          $fees = new Fees();
+          $fees->idWorktime = $worktime->id;
+          $fees->price = $worktime_d['fees'][$i]['value'];
+          $fees->comment = $worktime_d['fees'][$i]['name'];
+          $fees->save();
+        }
+      }
+
+
 
     }
 }
