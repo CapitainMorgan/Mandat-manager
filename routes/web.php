@@ -26,3 +26,5 @@ Route::get('/calendar', 'CalendarController@index')->name('calendar');
 Route::get('/mandate/share/{user_id}/{mandate_id}', 'MandatController@share')->where('user_id','[0-9]+')->where('mandate_id','[0-9]+');
 Route::get('/events', "CalendarController@events");
 Route::post('/worktime/new', "MandatController@addWorktime");
+Route::get('/worktime/{id}', "MandatController@getWorkTime");
+Route::get('/worktime/delete/{id}', "MandatController@deleteWorktime");

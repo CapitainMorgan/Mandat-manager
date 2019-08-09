@@ -144,8 +144,23 @@ class MandatController extends Controller
           $fees->save();
         }
       }
-
-
-
     }
+
+      public function getWorkTime($id)
+      {
+        $worktime = WorkTime::where('idMandate',$id)->get();
+
+        return json_encode($worktime);
+      }
+
+
+      public function deleteWorktime($id)
+      {
+        $worktime = WorkTime::where('id', $id)->first();
+
+        $worktime->delete();
+
+        return json_encode(true);
+      }
+
 }

@@ -99,8 +99,8 @@ export default {
     },
     methods: {
         submitFees: function() {
-            axios.post('/worktime/new', this.form).the(response => {
-                console.log(response.data);
+            axios.post('/worktime/new', this.form).then(response => {
+                location.reload();
             });
         },
         deleteFees: function(id) {
