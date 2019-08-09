@@ -27,6 +27,7 @@ export default {
     props: ['mandate_param'],
     data() {
         return {
+          mandate_worktime : null,
           mandate : null,
         }
     },

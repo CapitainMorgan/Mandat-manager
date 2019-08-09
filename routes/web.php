@@ -25,3 +25,4 @@ Route::get('/price/all', 'MandatController@getPrice')->name('get_prices');
 Route::get('/calendar', 'CalendarController@index')->name('calendar');
 Route::get('/mandate/share/{user_id}/{mandate_id}', 'MandatController@share')->where('user_id','[0-9]+')->where('mandate_id','[0-9]+');
 Route::get('/events', "CalendarController@events");
+Route::post('/worktime/new', "MandatController@addWorktime");
