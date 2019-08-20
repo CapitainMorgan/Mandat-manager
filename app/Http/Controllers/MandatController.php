@@ -26,6 +26,13 @@ class MandatController extends Controller
         ]);
     }
 
+    public function getAllMandate()
+    {
+      $mandate = Mandate::join('workon','id','=','workon.idMandate')->where("workon.idUser","=",auth()->user()->id)->get();
+      
+      return json_encode($mandate);
+    }
+
     public function show($mandate_id)
     {
         $mandate = Mandate::where('id',$mandate_id)->first();
@@ -40,6 +47,34 @@ class MandatController extends Controller
         return view('mandate.create',[]);
     }
 
+    public function deleteMandate($mandate_id){      
+        
+      Workon::where('idMandate',"=",$mandate_id)->delete();    
+     
+      return json_encode(true);
+    }
+
+    public function getAllUsersNotShared($mandate_id)
+    {
+        $usersNotChecked = DB::table('users')->where('id',"!=",auth()->user()->id)->get();
+        $users = [];
+        for($i = 0;$i < count($usersNotChecked);$i++)
+        {
+          $check = DB::table('workon')->where('idUser',"=",$usersNotChecked[$i]->id)->where('idMandate',"=",$mandate_id)->get();
+          if(count($check) == 0)
+          {
+            $users[] = $usersNotChecked[$i];
+          }
+        }
+
+        if(count($users) == 0)
+        {
+          $users[] = array('name' => 'Le mandat est déjà partagé pour tous les utilisateurs');
+        }
+        
+        return json_encode($users);
+    }
+
     public function store(Request $request)
     {
       $datas = $request->all();
@@ -48,6 +83,7 @@ class MandatController extends Controller
       $mandate->name = $datas['name'];
       $mandate->start = $datas['start'];
       $mandate->end = $datas['end'];
+      $mandate->color = $datas['color'];
       $mandate->comment = $datas['description'];
 
       $mandate->save();
@@ -59,11 +95,13 @@ class MandatController extends Controller
       return json_encode(true);
     }
 
-    public function share($user_id,$mandate_id)
+    public function share($mandate_id,$user_id)
     {
         DB::table('workon')->insert(
-            ['idMandate' => $mandate_id, 'idUser'  => $user_id]
+            ['idMandate' => $mandate_id, 'idUser' => $user_id]
         );
+
+        return "true";
     }
 
     public function modify($mandate_id)
@@ -91,11 +129,6 @@ class MandatController extends Controller
       return json_encode(true);
     }
 
-    public function delete()
-    {
-
-    }
-
     public function getPrice()
     {
       $prices = Price::all();
@@ -103,14 +136,32 @@ class MandatController extends Controller
       return json_encode($prices);
     }
 
-    public function createPrice()
+    public function createPrice(Request $request)
     {
+      $datas = $request->all();
 
+      $price_d = $datas['price'];
+
+      $price = new Price;
+      $price->price = $price_d['price'];
+      $price->name = $price_d['name'];
+
+      $price->save();
+
+      return json_encode(true);
     }
 
-    public function editPrice($price_id)
+    public function editPrice(Request $request)
     {
+      $datas = $request->all();
 
+      $price = Price::where('id',$datas['id'])->first();
+      $price->price = $datas['price'];
+      $price->name = $datas['name'];
+
+      $price->save();
+
+      return json_encode(true);
     }
 
     public function addWorktime(Request $request)
@@ -153,6 +204,33 @@ class MandatController extends Controller
         return json_encode($worktime);
       }
 
+
+      public function getFees($worktime_id)
+      {
+        $fees = Fees::where('idWorktime',$worktime_id)->get();
+
+        return json_encode($fees);
+      }
+
+      public function editFees(Request $request)
+      {
+        $fees = Fees::where('id',$datas['id'])->first();
+        $fees->price = $datas['price'];
+        $fees->comment = $datas['comment'];
+
+        $fees->save();
+
+        return json_encode(true);
+      }
+
+      public function deleteFees($fees_id)
+      {
+        $fees = Fees::where('id',$fees_id)->first();
+
+        $fees->delete();
+
+        return json_encode(true);
+      }
 
       public function deleteWorktime($id)
       {

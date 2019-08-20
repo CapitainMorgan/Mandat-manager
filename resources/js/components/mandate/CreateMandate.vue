@@ -20,7 +20,11 @@
             <b-form-group id="endDateGroup" label="Fin" label-for="endDate">
                 <b-form-input id="endDate" v-model="end" type="date">
                 </b-form-input>
-            </b-form-group>
+            </b-form-group>            
+            <b-from-group id="colorpickerlabel" label="Couleur" label-for="colorpicker">
+                <b-form-input id="colorpicker" v-model="color" type="color">
+                </b-form-input>
+            </b-from-group>
         </b-form-group>
         <b-form-group id="descriptionGroup" label="Description" label-for="textarea">
             <b-form-textarea id="textarea" v-model="description" placeholder="Description" rows="3"></b-form-textarea>
@@ -49,6 +53,7 @@ export default {
                 name: '',
                 start: '',
                 end: '',
+                color: '',
                 description: '',
                 file: [],
                 showAlert: false,
@@ -62,6 +67,7 @@ export default {
             let my_var = JSON.parse(this.mandate_param);
             this.id = my_var.id;
             this.name = my_var.name;
+            this.color = my_var.color;
             this.start = this.dataFilter(my_var.start);
             this.end = this.dataFilter(my_var.end);
             this.description = my_var.comment;
@@ -76,22 +82,23 @@ export default {
             },
             submit() {
                 if(this.modify){
-                  let formData = new FormData();
+                    let formData = new FormData();
 
-                  formData.append('id', this.id)
-                  formData.append('name', this.name);
-                  formData.append('start', this.start);
-                  formData.append('end', this.end);
-                  formData.append('description', this.description);
-                  formData.append('files', this.file);
+                    formData.append('id', this.id)
+                    formData.append('name', this.name);
+                    formData.append('start', this.start);
+                    formData.append('end', this.end);                  
+                    formData.append('color',this.color);
+                    formData.append('description', this.description);
+                    formData.append('files', this.file);
 
-                  axios.post('/mandate/update', formData, {
-                      headers: {
-                          'Content-Type': 'multipart/form-data'
-                      }
-                  }).then(response => {
-                      this.showAlert = true;
-                  });
+                    axios.post('/mandate/update', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(response => {
+                        location.href = "/mandate/"+this.id;
+                    });
                 }else{
                     let formData = new FormData();
 
@@ -103,6 +110,7 @@ export default {
                     formData.append('name', this.name);
                     formData.append('start', this.start);
                     formData.append('end', this.end);
+                    formData.append('color',this.color);
                     formData.append('description', this.description);
                     formData.append('files', this.file);
 
@@ -111,7 +119,7 @@ export default {
                             'Content-Type': 'multipart/form-data'
                         }
                     }).then(response => {
-                        this.showAlert = true;
+                        location.href = "/mandate";
                     });
                     }
                 },

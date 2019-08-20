@@ -17,8 +17,10 @@ class Mandate extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->timestamp('start');
-            $table->timestamp('end');
-            $table->string('comment');
+            $table->timestamp('end')->nullable();
+            $table->string('color')->nullable();
+            $table->decimal('TVA',4,2)->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

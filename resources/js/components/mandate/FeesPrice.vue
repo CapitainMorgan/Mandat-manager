@@ -4,7 +4,14 @@
     <b-card header="Ajouter du temps de travail :">
         <b-card-text>
             <b-form @submit.prevent="submitFees()">
-                <b-row>
+                
+                <b-form-select v-if="calendar" v-model="form.mandate_id" :options="mandates" text-field="name" value-field="id" class="mb-2">
+                    <template slot="first">
+                        <option :value="null" disabled>-- Choisir un Mandat --</option>
+                    </template>
+                </b-form-select>
+            
+                <b-row>                    
                     <b-col>
                         <b-form-group id="input-group-1" label="Début :" label-for="input-worktime-start" description="Entrez le début de votre temps de travail">
                             <b-form-input id="input-worktime-start" v-model="form.worktime.start" type="datetime-local" required></b-form-input>
@@ -16,9 +23,9 @@
                         </b-form-group>
                     </b-col>
                 </b-row>
-                <b-form-select v-model="form.worktime.price" :options="prices" text-field="name" value-field="id">
+                <b-form-select v-model="form.worktime.price" :options="prices" text-field="name" value-field="id" class="mb-2">
                     <template slot="first">
-                        <option :value="null" disabled>--Choisir une option --</option>
+                        <option :value="null" disabled>-- Choisir un tarif --</option>
                     </template>
                 </b-form-select>
                 <label for="textarea">Commentaire :</label>
@@ -26,7 +33,7 @@
 
                 <b-button v-on:click="addFees()" class="mt-2">Ajouter un frais</b-button>
 
-                <div v-for="(fee, index) in form.worktime.fees" >
+                <div v-bind:key="fee" v-for="(fee, index) in form.worktime.fees" >
 
                     <b-row class="border mt-2">
                     <b-button variant="outline-dark" @click="deleteFees(index)">X</b-button>
@@ -48,20 +55,20 @@
     </b-card>
 
 
-    <!--<b-card header="Ajouter un prix " class="mt-2 ">
+    <b-card header="Ajouter un prix " class="mt-2 ">
         <b-card-text>
             <b-form @submit.prevent="submitPrice() ">
                 <b-form-group id="input-group-1 " label="Prix : " label-for="input-price " description="Entrez votre prix ">
-                    <b-form-input id="input-price " v-model="form.price.value " type="number " required step="0.05 "></b-form-input>
+                    <b-form-input id="input-price " v-model="form.price.price " type="number" required step="0.05 "></b-form-input>
                 </b-form-group>
                 <b-form-group id="input-group-2 " label="Nom : " label-for="input-price-name " description="Entrez le nom de ce tarif ">
-                    <b-form-input id="input-price-name " v-model="form.price.name " type="text "></b-form-input>
+                    <b-form-input id="input-price-name " v-model="form.price.name " type="text"></b-form-input>
                 </b-form-group>
-                <b-button class="mt-2 " variant="primary " type="submit ">Ajouter</b-button>
+                <b-button class="mt-2 " variant="primary " type="submit">Ajouter</b-button>
             </b-form>
 
         </b-card-text>
-    </b-card>-->
+    </b-card>
 </div>
 
 </template>
@@ -76,14 +83,16 @@ export default {
             this.prices = response.data;
         });
     },
-    props: ['mandate_id'],
+    props: ['mandate_id','calendar'],    
     data() {
         return {
             prices: [],
+            mandates: [],
             form: {
                 mandate_id: this.mandate_id,
+                calendar: (this.calendar == 'true'),
                 price: {
-                    value: '',
+                    price: '',
                     name: '',
                 },
                 worktime: {
@@ -96,6 +105,11 @@ export default {
                 },
             }
         }
+    },
+    mounted() {
+        this.getAllMandate();
+        if(calendar)
+            this.form.mandate_id = null;
     },
     methods: {
         submitFees: function() {
@@ -115,6 +129,22 @@ export default {
             });
 
             this.form.worktime.fees_number++;
+        },
+        submitPrice: function(){
+
+            self = this;
+            axios.post('/price/new', this.form).then(response => {
+                axios.get('/price/all').then(response => {
+                    this.prices = response.data;
+                });
+                self.form.price.price = "";
+                self.form.price.name = "";
+            },self);
+        },
+        getAllMandate: function() {
+            axios.get('/getAllMandate').then(response => {
+                this.mandates = response.data
+            });
         }
     }
 

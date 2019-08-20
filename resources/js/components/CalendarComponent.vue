@@ -1,6 +1,7 @@
 <template>
     <div class="container"> 
         <FullCalendar
+        id="calendar"
         ref="fullCalendar"    
         defaultView="dayGridMonth" 
         :plugins="calendarPlugins" 
@@ -11,8 +12,10 @@
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
         }"
         locale="fr"
-        firstDay="1"
+        :firstDay="1"
+        @eventClick="eventClick"
         />
+        <fees-price calendar="true"></fees-price>
     </div>
 </template>
 
@@ -46,16 +49,22 @@
         mounted() {
                 var self = this;
                 axios.get('/events').then(response => (self.noformatEvents) = response.data.events).then(function (response) {
-                for(var i = 0;i < self.noformatEvents.length ;i++)
-                {
-                    self.events.push({
-                        title: self.noformatEvents[i].title,
-                        start: self.noformatEvents[i].start,
-                        end: self.noformatEvents[i].end
-                    })
-                }
-            },self);
-            
+                    for(var i = 0;i < self.noformatEvents.length ;i++)
+                    {
+                        self.events.push({
+                            title: self.noformatEvents[i].title,
+                            start: self.noformatEvents[i].start,
+                            end: self.noformatEvents[i].end,
+                            color: self.noformatEvents[i].color,
+                        })
+                    }
+                },self);
+                      
+        },
+        methods:{
+            eventClick: function(info){
+                console.log(info);
+            },
         },
     }
 </script>
