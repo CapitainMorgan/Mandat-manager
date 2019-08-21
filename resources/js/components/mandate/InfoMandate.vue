@@ -26,13 +26,11 @@
             Le <strong v-text="dataFilter(worktime.start)"></strong><br>
             De <strong v-text="dataFilterHour(worktime.start)"></strong> à <strong v-text="dataFilterHour(worktime.end)"></strong><br>            
             Commentaire : <span v-text="worktime.comment"></span>  <br>   
-            Tarif : <span v-text="getPrice(worktime.idPrice)"></span> CHF/Heure <br>       
-            <div :key="fees.id" v-for="fees in mandate_fees.fees">     
-                <b-list-group-item :key="fee.id" v-for="fee in fees">
-                    Commentaire : <span v-text="fee.feesComment"></span> <br>
-                    Prix : <span v-text="fee.price"></span> CHF
-                </b-list-group-item>
-            </div>
+            Tarif : <span v-text="getPrice(worktime.idPrice)"></span> CHF/Heure <br> 
+            <b-list-group-item class="mb-1" :key="fee.id" v-for="fee in worktime.fees">
+                Commentaire : <span v-text="fee.feesComment"></span> <br>
+                Prix : <span v-text="fee.price"></span> CHF
+            </b-list-group-item>
             <b-button >Modifier (ne fonctionne pas encore)</b-button> <b-button v-on:click="deleteWorktime(worktime.id)">Supprimer</b-button>
             
 
@@ -57,7 +55,7 @@ export default {
             mandate: null,
             users: null,
             alert: false,
-            mandate_fees: [],
+            mandate_fees: null,
         }
     },
     created: function() {
@@ -66,10 +64,10 @@ export default {
         
         this.getNotSharedUser(); 
         axios.get('/price/all').then(response => {
-            this.prices = response.data;            
+            this.prices = response.data;           
                          
-        });   
-        this.loadWorkTime();    
+            this.loadWorkTime(); 
+        });      
                 
         },
     methods: {
@@ -89,6 +87,7 @@ export default {
                 self.mandate_worktime = response.data;
                 var index = 0;
                 var listId = [];
+                self.mandate_fees = [];
                 for(var i = 0; i < self.mandate_worktime.length;i++)
                 {
                     if(!listId.includes(self.mandate_worktime[i].idWorktime))
