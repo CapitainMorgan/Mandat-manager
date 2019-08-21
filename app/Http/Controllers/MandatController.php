@@ -199,7 +199,7 @@ class MandatController extends Controller
 
       public function getWorkTime($id)
       {
-        $worktime = WorkTime::where('idMandate',$id)->get();
+        $worktime = WorkTime::join('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
 
         return json_encode($worktime);
       }

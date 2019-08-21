@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(mandate,index) in mandates">
+                <tr :key="mandate.id" v-for="(mandate,index) in mandates">
                     <th>{{mandate.name}}</th>
                     <th>{{formatDate(mandate.start)}}</th>
                     <th>{{formatDate(mandate.end)}}</th>

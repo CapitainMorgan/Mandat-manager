@@ -14,9 +14,9 @@ class Fees extends Migration
     public function up()
     {
         Schema::create('fees', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('idFees');
             $table->decimal('price');
-            $table->string('comment');
+            $table->string('feesComment');
             $table->unsignedBigInteger('idWorktime');
             $table->foreign('idWorktime')->references('id')->on('worktime');
             $table->timestamps();
