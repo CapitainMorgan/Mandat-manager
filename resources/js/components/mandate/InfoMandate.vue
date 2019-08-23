@@ -17,8 +17,8 @@
                 <b-list-group-item><b>Commentaire :</b> {{mandate.comment}}</b-list-group-item>
             </b-list-group>
             <b-button class="mt-2" variant="primary" :href="'/mandate/modify/'+mandate.id">Modifier</b-button>
-            <b-dropdown class="mt-2" variant="primary" right text="Partager" :key="user.id" v-for="user in users">
-                <b-dropdown-item  v-on:click="share(user.id)">{{user.name}}</b-dropdown-item>
+            <b-dropdown class="mt-2" variant="primary" right text="Partager" >
+                <b-dropdown-item :key="user.id" v-for="user in users" v-on:click="share(user.id)">{{user.name}}</b-dropdown-item>
             </b-dropdown>
         </b-card-text>
 <b-list-group>
@@ -36,7 +36,7 @@
 
         </b-list-group-item>
         </b-list-group>
-         
+            
     </b-card>    
 </div>
 
