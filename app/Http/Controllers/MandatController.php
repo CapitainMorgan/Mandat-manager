@@ -175,7 +175,7 @@ class MandatController extends Controller
       $fees = [];
       $price = Price::where('id',$worktime_d['price'])->first();
       $worktime->idMandate = $datas['mandate_id'];
-      $worktime->idUser = 1;
+      $worktime->idUser = auth()->user()->id;
       $worktime->idPrice = $price->id;
       $worktime->start = str_replace('T', ' ',$worktime_d['start']);
       $worktime->end = str_replace('T', ' ',$worktime_d['end']);
