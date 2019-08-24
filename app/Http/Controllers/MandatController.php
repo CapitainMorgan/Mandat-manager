@@ -194,6 +194,7 @@ class MandatController extends Controller
           $fees->save();
         }
     }
+  }
 
       public function getWorkTime($id)
       {
@@ -232,6 +233,13 @@ class MandatController extends Controller
 
       public function deleteWorktime($id)
       {
+        $fees = Fees::where('idWorktime',$id)->get();
+
+        for($i = 0;$i < count($fees);$i++)
+        {
+          deleteFees($fees[$i]['id']);
+        }
+
         $worktime = WorkTime::where('id', $id)->first();
 
         $worktime->delete();
