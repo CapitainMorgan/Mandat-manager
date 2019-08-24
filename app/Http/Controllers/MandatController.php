@@ -193,20 +193,11 @@ class MandatController extends Controller
           $fees->feesComment = $worktime_d['fees'][$i]['name'];
           $fees->save();
         }
-      }else{
-          $fees = new Fees();
-          $fees->idWorktime = $worktime->id;
-          $fees->price = 0;
-          $fees->feesComment = "Pas de frais";
-          $fees->save();
-      }
     }
 
       public function getWorkTime($id)
       {
         $worktime = WorkTime::leftjoin('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
-
-        
 
         return json_encode($worktime);
       }
