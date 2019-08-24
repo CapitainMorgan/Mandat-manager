@@ -55,7 +55,7 @@
     </b-card>
 
 
-    <b-card header="Ajouter un prix " class="mt-2 ">
+    <b-card header="Créer un tarif " class="mt-2 ">
         <b-card-text>
             <b-form @submit.prevent="submitPrice() ">
                 <b-form-group id="input-group-1 " label="Prix : " label-for="input-price " description="Entrez votre prix ">

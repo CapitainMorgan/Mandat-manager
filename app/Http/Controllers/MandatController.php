@@ -184,22 +184,29 @@ class MandatController extends Controller
       $worktime->save();
 
       if($worktime_d['fees_number'] > 0)
-      {
-
+      {        
         for($i = 0; $i<$worktime_d['fees_number']; $i++)
         {
           $fees = new Fees();
           $fees->idWorktime = $worktime->id;
           $fees->price = $worktime_d['fees'][$i]['value'];
-          $fees->comment = $worktime_d['fees'][$i]['name'];
+          $fees->feesComment = $worktime_d['fees'][$i]['name'];
           $fees->save();
         }
+      }else{
+          $fees = new Fees();
+          $fees->idWorktime = $worktime->id;
+          $fees->price = 0;
+          $fees->feesComment = "Pas de frais";
+          $fees->save();
       }
     }
 
       public function getWorkTime($id)
       {
-        $worktime = WorkTime::join('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
+        $worktime = WorkTime::leftjoin('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
+
+        
 
         return json_encode($worktime);
       }

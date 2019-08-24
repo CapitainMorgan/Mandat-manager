@@ -90,14 +90,22 @@ export default {
                 self.mandate_fees = [];
                 for(var i = 0; i < self.mandate_worktime.length;i++)
                 {
-                    if(!listId.includes(self.mandate_worktime[i].idWorktime))
+                    if(!listId.includes(self.mandate_worktime[i].id))
                     {
-                        self.mandate_fees[index] = {id: self.mandate_worktime[i].idWorktime,comment:self.mandate_worktime[i].comment,start:self.mandate_worktime[i].start,end:self.mandate_worktime[i].end,idPrice:self.mandate_worktime[i].idPrice,fees:[{id:self.mandate_worktime[i].id,feesComment:self.mandate_worktime[i].feesComment,price:self.mandate_worktime[i].price,}],};
+                        if(self.mandate_worktime[i].idFees != null)
+                        {
+                            self.mandate_fees[index] = {id: self.mandate_worktime[i].id,comment:self.mandate_worktime[i].comment,start:self.mandate_worktime[i].start,end:self.mandate_worktime[i].end,idPrice:self.mandate_worktime[i].idPrice,fees:[{id:self.mandate_worktime[i].idFees,feesComment:self.mandate_worktime[i].feesComment,price:self.mandate_worktime[i].price,}],};
+                        }else{
+                            self.mandate_fees[index] = {id: self.mandate_worktime[i].id,comment:self.mandate_worktime[i].comment,start:self.mandate_worktime[i].start,end:self.mandate_worktime[i].end,idPrice:self.mandate_worktime[i].idPrice,fees:[],};
+                        }
                         index++;
-                        listId.push(self.mandate_worktime[i].idWorktime);
+                        listId.push(self.mandate_worktime[i].id);
                     }
                     else{
-                        self.mandate_fees[listId.indexOf(self.mandate_worktime[i].idWorktime)].fees.push({id:self.mandate_worktime[i].id,feesComment:self.mandate_worktime[i].feesComment,price:self.mandate_worktime[i].price,});
+                        if(self.mandate_worktime[i].idFees != null)
+                        {
+                            self.mandate_fees[listId.indexOf(self.mandate_worktime[i].id)].fees.push({id:self.mandate_worktime[i].idFees,feesComment:self.mandate_worktime[i].feesComment,price:self.mandate_worktime[i].price,});
+                        }
                     }                    
                 }
                                                 
