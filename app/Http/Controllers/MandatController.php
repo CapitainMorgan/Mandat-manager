@@ -193,58 +193,62 @@ class MandatController extends Controller
           $fees->feesComment = $worktime_d['fees'][$i]['name'];
           $fees->save();
         }
+      }
     }
-  }
 
-      public function getWorkTime($id)
+    public function getWorkTime($id)
+    {
+      $worktime = WorkTime::leftjoin('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
+
+      return json_encode($worktime);
+    }
+
+
+    public function getFees($worktime_id)
+    {
+      $fees = Fees::where('idWorktime',$worktime_id)->get();
+
+      return json_encode($fees);
+    }
+
+    public function editFees(Request $request)
+    {
+      $fees = Fees::where('id',$datas['id'])->first();
+      $fees->price = $datas['price'];
+      $fees->comment = $datas['comment'];
+
+      $fees->save();
+
+      return json_encode(true);
+    }
+
+    public function deleteWorktime($id)
+    {
+      $fees = Fees::where('idWorktime',$id)->get();
+
+      for($i = 0;$i < count($fees);$i++)
       {
-        $worktime = WorkTime::leftjoin('fees','worktime.id','=','fees.idWorktime')->where('worktime.idMandate',$id)->get();
+        $fee = Fees::where('idFees',$fees[$i]->idFees)->first();
 
-        return json_encode($worktime);
+        $fee->delete();
       }
 
+      $worktime = WorkTime::where('id', $id)->first();
 
-      public function getFees($worktime_id)
-      {
-        $fees = Fees::where('idWorktime',$worktime_id)->get();
+      $worktime->delete();
 
-        return json_encode($fees);
-      }
+      return json_encode(true);
+    }
 
-      public function editFees(Request $request)
-      {
-        $fees = Fees::where('id',$datas['id'])->first();
-        $fees->price = $datas['price'];
-        $fees->comment = $datas['comment'];
+    public function deleteFees($fees_id)
+    {
+      $fees = Fees::where('id',$fees_id)->first();
 
-        $fees->save();
+      $fees->delete();
 
-        return json_encode(true);
-      }
+      return json_encode(true);
+    }
 
-      public function deleteFees($fees_id)
-      {
-        $fees = Fees::where('id',$fees_id)->first();
-
-        $fees->delete();
-
-        return json_encode(true);
-      }
-
-      public function deleteWorktime($id)
-      {
-        $fees = Fees::where('idWorktime',$id)->get();
-
-        for($i = 0;$i < count($fees);$i++)
-        {
-          deleteFees($fees[$i]['id']);
-        }
-
-        $worktime = WorkTime::where('id', $id)->first();
-
-        $worktime->delete();
-
-        return json_encode(true);
-      }
+    
 
 }
