@@ -70,6 +70,8 @@ export default {
             this.color = my_var.color;
             this.start = this.dataFilter(my_var.start);
             this.end = this.dataFilter(my_var.end);
+            if(this.end == undefined)
+                this.end = '';
             this.description = my_var.comment;
           }
         },
