@@ -81,6 +81,7 @@ export default {
     created: function() {
         axios.get('/price/all').then(response => {
             this.prices = response.data;
+            this.sortedArray();
         });
     },
     props: ['mandate_id','calendar'],    
@@ -111,6 +112,19 @@ export default {
         if(calendar)
             this.form.mandate_id = null;
     },
+    computed: {
+        sortedArray: function() {
+            function compare(a, b) {
+            if (a.name < b.name)
+                return -1;
+            if (a.name > b.name)
+                return 1;
+            return 0;
+            }
+
+            return this.prices.sort(compare);
+        }
+    },
     methods: {
         submitFees: function() {
             axios.post('/worktime/new', this.form).then(response => {
@@ -136,6 +150,7 @@ export default {
             axios.post('/price/new', this.form).then(response => {
                 axios.get('/price/all').then(response => {
                     this.prices = response.data;
+                     this.sortedArray();
                 });
                 self.form.price.price = "";
                 self.form.price.name = "";
@@ -145,7 +160,8 @@ export default {
             axios.get('/getAllMandate').then(response => {
                 this.mandates = response.data
             });
-        }
+        },
+        
     }
 
 }
