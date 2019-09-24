@@ -13,6 +13,12 @@
         }"
         locale="fr"
         :firstDay="1"
+        :eventLimit="true"
+        :views="{
+            timeGrid:{
+                eventLimit: 3
+            }
+        }"
         @eventClick="eventClick"
         />
         <fees-price calendar="true"></fees-price>
