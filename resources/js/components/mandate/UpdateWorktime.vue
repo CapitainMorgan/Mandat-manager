@@ -132,7 +132,7 @@
             },
 
             deleteFees: function(id) {
-                //TODO
+                
                 this.form.worktime.fees.splice(id, 1);
 
                 this.form.worktime.fees_number--;
@@ -141,6 +141,7 @@
             addFees: function() {
 
                 this.form.worktime.fees.push({
+                    idFees:-1,
                     price: '',
                     feesComment: ''
                 });
