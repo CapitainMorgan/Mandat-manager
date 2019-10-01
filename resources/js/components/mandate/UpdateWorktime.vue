@@ -112,7 +112,7 @@
             dataFilter(value)
             {
               if (value) {
-                  return moment(String(value)).format('YYYY-MM-DDThh:mm')
+                  return moment(String(value)).format('YYYY-MM-DDTHH:mm')
                 }
             },
 

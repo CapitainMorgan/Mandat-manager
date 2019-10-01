@@ -219,15 +219,16 @@ class MandatController extends Controller
 
       $worktime_d = $datas['worktime'];
 
-      $worktime = WorkTime::where('id',$worktime_d['id']);     
+      $worktime = WorkTime::where('id',$worktime_d['id'])->first();     
 
-      $fees = [];
       $price = Price::where('id',$worktime_d['price'])->first();
       $worktime->idUser = auth()->user()->id;
       $worktime->idPrice = $price->id;
       $worktime->start = str_replace('T', ' ',$worktime_d['start']);
       $worktime->end = str_replace('T', ' ',$worktime_d['end']);
       $worktime->comment = $worktime_d['comment'];
+      
+      $worktime->save();
 
       $feesId = [];
       for($i = 0; $i<count($worktime_d['fees']); $i++)
@@ -246,24 +247,29 @@ class MandatController extends Controller
             $isOut = false;
         }
         if($isOut)
-          deleteFees($pastfees[$i]['idFees']);
-      }
+        {
+          $fee = Fees::where('idFees',$pastfees[$i]['idFees'])->first();
 
+          $fee->delete();
+
+          return json_encode(true);
+        }
+      }
+      
       for($i = 0; $i<count($worktime_d['fees']); $i++)
       {
+        $fees = new Fees();
+
         if($worktime_d['fees'][$i]['idFees'] != -1)
-          $fees = Fees::where('idFees',$worktime_d['fees'][$i]['idFees'])->first();
-        else
-          $fees = new Fees();
+          $fees = Fees::where('idFees','=',$worktime_d['fees'][$i]['idFees'])->first();         
 
         $fees->idWorktime = $worktime_d['id'];
         $fees->price = $worktime_d['fees'][$i]['price'];
         $fees->feesComment = $worktime_d['fees'][$i]['feesComment'];
+        
         $fees->save();
       }
 
-      $worktime->save();
-      
     }
 
     public function getWorkTime($id)
