@@ -212,6 +212,8 @@ class MandatController extends Controller
 
     public function editFees(Request $request)
     {
+      $datas = $request->all();
+
       $fees = Fees::where('id',$datas['id'])->first();
       $fees->price = $datas['price'];
       $fees->comment = $datas['comment'];
@@ -248,6 +250,12 @@ class MandatController extends Controller
       return json_encode(true);
     }
 
+    public function createBillFiles(Request $request)
+    {
+        $datas = $request->all();
+
+        
+    }
     
 
 }
