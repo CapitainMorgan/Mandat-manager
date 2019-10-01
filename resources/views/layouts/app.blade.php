@@ -53,6 +53,7 @@
                     <ul class="navbar-nav mr-auto">                    
                         @if (Auth::check())
                             <li class="nav-item"><a class="nav-link" href="{{ route('mandat')}}">{{ __('Mandats') }}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('price')}}">{{ __('Tarifs') }}</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('calendar')}}">{{ __('Calendrier') }}</a></li>
                         @endif                    
                     </ul>

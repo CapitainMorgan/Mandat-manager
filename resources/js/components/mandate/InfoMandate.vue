@@ -78,6 +78,8 @@ export default {
             {
                 axios.get('/worktime/delete/'+id).then(response => {
                     self.loadWorkTime();
+                },error => {
+                    alert("Une erreur est survenue ! Merci de contacter l'adiminstrateur")
                 },self);
             }
         },
@@ -143,6 +145,9 @@ export default {
                 axios.get('/mandate/'+ this.mandate.id +"/share/"+ id).then(response => {
                     self.showAlert();
                     self.getNotSharedUser();
+                },
+                error => {
+                    alert("Une erreur est survenue ! Merci de contacter l'adiminstrateur")
                 },self);
             }
         },

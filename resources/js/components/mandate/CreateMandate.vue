@@ -122,6 +122,8 @@ export default {
                         }
                     }).then(response => {
                         location.href = "/mandate";
+                    },error => {
+                        alert("Une erreur est survenue ! Vérifier que tous les champs obligatoires sont remplis. Sinon merci de contacter l'adiminstrateur.")
                     });
                     }
                 },

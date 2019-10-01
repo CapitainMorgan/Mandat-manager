@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/mandate', 'MandatController@index')->name('mandat');
+Route::get('/price', 'PriceController@index')->name('price');
 Route::get('/mandate/{mandate_id}', 'MandatController@show')->where('mandate_id', '[0-9]+');
 Route::get('/mandate/create', 'MandatController@create')->name('mandat_create');
 Route::get('/mandate/modify/{mandate_id}', 'MandatController@modify')->where('mandate_id', '[0-9]+');

@@ -129,6 +129,8 @@ export default {
         submitFees: function() {
             axios.post('/worktime/new', this.form).then(response => {
                 location.reload();
+            },error => {
+                alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
             });
         },
         deleteFees: function(id) {
@@ -154,6 +156,8 @@ export default {
                 });
                 self.form.price.price = "";
                 self.form.price.name = "";
+            },error => {
+                    alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
             },self);
         },
         getAllMandate: function() {
