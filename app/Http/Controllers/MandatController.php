@@ -163,6 +163,15 @@ class MandatController extends Controller
       return json_encode(true);
     }
 
+    public function updateWorktime($worktime_id)
+    {
+      $worktime = WorkTime::where('id',$worktime_id)->first();
+      
+      return view('mandate.updateWorktime',[
+        'worktime' => $worktime,
+      ]);
+    }
+
     public function addWorktime(Request $request)
     {
       $datas = $request->all();
@@ -181,6 +190,36 @@ class MandatController extends Controller
       $worktime->comment = $worktime_d['comment'];
 
       $worktime->save();
+
+      if($worktime_d['fees_number'] > 0)
+      {        
+        for($i = 0; $i<$worktime_d['fees_number']; $i++)
+        {
+          $fees = new Fees();
+          $fees->idWorktime = $worktime->id;
+          $fees->price = $worktime_d['fees'][$i]['value'];
+          $fees->feesComment = $worktime_d['fees'][$i]['name'];
+          $fees->save();
+        }
+      }
+    }
+
+    public function editWorktime(Request $request)
+    {
+      $datas = $request->all();
+
+      $worktime = new WorkTime();
+
+      $worktime_d = $datas['worktime'];
+
+      $fees = [];
+      $price = Price::where('id',$worktime_d['price'])->first();
+      $worktime->idMandate = $datas['mandate_id'];
+      $worktime->idUser = auth()->user()->id;
+      $worktime->idPrice = $price->id;
+      $worktime->start = str_replace('T', ' ',$worktime_d['start']);
+      $worktime->end = str_replace('T', ' ',$worktime_d['end']);
+      $worktime->comment = $worktime_d['comment'];
 
       if($worktime_d['fees_number'] > 0)
       {        

@@ -31,7 +31,7 @@
                 Commentaire : <span v-text="fee.feesComment"></span> <br>
                 Prix : <span v-text="fee.price"></span> CHF
             </b-list-group-item>
-            <b-button >Modifier (ne fonctionne pas encore)</b-button> <b-button v-on:click="deleteWorktime(worktime.id)">Supprimer</b-button>
+            <b-button v-on:click="editWorktime(worktime.id)" >Modifier</b-button> <b-button v-on:click="deleteWorktime(worktime.id)">Supprimer</b-button>
             
 
         </b-list-group-item>
@@ -150,6 +150,9 @@ export default {
                     alert("Une erreur est survenue ! Merci de contacter l'adiminstrateur")
                 },self);
             }
+        },
+        editWorktime: function(index){
+            location.href = "/worktime/edit/"+index;
         },
         showAlert: function(){
             this.alert = true;
