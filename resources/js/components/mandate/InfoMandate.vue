@@ -135,8 +135,8 @@ export default {
         getNotSharedUser: function()
         {
             axios.get('/getAllUsersNotShared/' + this.mandate.id).then(response => {
-            this.users = response.data;
-        });
+                this.users = response.data;
+            });
         },
         share: function(id){
             if(id)

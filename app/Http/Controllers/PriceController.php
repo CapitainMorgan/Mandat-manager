@@ -15,4 +15,17 @@ class PriceController extends Controller
             'prices' => $prices,
         ]);
     }
+
+    public function editPrice(Request $request)
+    {
+        $datas = $request->all();
+
+        $price = Price::where('id',$datas['id'])->first();
+        $price->name = $datas['name'];
+        $price->price = $datas['price'];
+
+        $price->save();
+
+        return json_encode(true);
+    }
 }

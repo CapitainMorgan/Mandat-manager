@@ -111,7 +111,6 @@ class MandatController extends Controller
       return view('mandate.modify',[
           'mandate' => $mandate,
       ]);
-
     }
 
     public function update(Request $request)
