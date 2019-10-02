@@ -49,7 +49,7 @@ class MandatController extends Controller
 
     public function deleteMandate($mandate_id){      
         
-      Workon::where('idMandate',"=",$mandate_id)->delete();    
+      DB::table('workon')->where('idMandate',"=",$mandate_id)->delete();    
      
       return json_encode(true);
     }
