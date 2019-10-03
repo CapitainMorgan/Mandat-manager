@@ -20,7 +20,14 @@
             <b-dropdown class="mt-2" variant="primary" right text="Partager" >
                 <b-dropdown-item :key="user.id" v-for="user in users" v-on:click="share(user.id)">{{user.name}}</b-dropdown-item>
             </b-dropdown>
+            <b-button class="mt-2" variant="primary" v-b-modal.billModal>Générer une facture</b-button>
         </b-card-text>
+
+        <b-modal id="billModal" title="Facturation">
+            <bill-mandate :mandate_param="mandate_param"></bill-mandate>
+        </b-modal>
+
+
 <b-list-group>
         <b-list-group-item :key="worktime.id" v-for="worktime in mandate_fees">
             Le <strong v-text="dataFilter(worktime.start)"></strong><br>
@@ -70,7 +77,7 @@ export default {
         });      
                 
         },
-    methods: {
+    methods: {        
         deleteWorktime: function(id)
         {
             self = this;

@@ -324,7 +324,7 @@ class MandatController extends Controller
     {
         $datas = $request->all();
 
-        
+        //TODO génération du fichier word et excel
     }
     
 
