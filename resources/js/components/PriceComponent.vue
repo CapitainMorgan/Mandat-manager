@@ -49,10 +49,24 @@
                 }
             }
         },
+        computed: {
+            
+        },
         mounted() {
-            console.log('Component mounted.')
+            this.sortedArray();
         },
         methods:{
+            sortedArray: function() {
+                function compare(a, b) {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+                }
+
+                return this.prices.sort(compare);
+            },
             editPrice(price){
                 axios.post('/price/edit', price).then(response => {
                     this.showAlert();

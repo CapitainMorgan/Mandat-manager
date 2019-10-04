@@ -166,9 +166,12 @@ class MandatController extends Controller
     public function updateWorktime($worktime_id)
     {
       $worktime = WorkTime::where('id',$worktime_id)->first();
+      $mandate = Mandate::where('id',$worktime['idMandate'])->first();
+      $mandate_id = $mandate['id'];
       
       return view('mandate.updateWorktime',[
         'worktime' => $worktime,
+        'mandate_id' => $mandate_id,
       ]);
     }
 

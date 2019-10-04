@@ -67,7 +67,7 @@
     import moment from 'moment'
 
     export default {
-        props: ['worktime_param'],    
+        props: ['worktime_param','mandate_id'],    
         data() {
             return {
                 prices: [],
@@ -125,7 +125,7 @@
 
             editWorktime: function() {
                 axios.post('/worktime/edit', this.form).then(response => {
-                    location.reload();
+                    location.href = "/mandate/"+this.mandate_id;
                 },error => {
                     alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
                 });
