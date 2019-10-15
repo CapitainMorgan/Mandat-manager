@@ -121,6 +121,7 @@ class MandatController extends Controller
       $mandate->name = $datas['name'];
       $mandate->start = $datas['start'];
       $mandate->end = $datas['end'];
+      $mandate->color = $datas['color'];
       $mandate->comment = $datas['description'];
 
       $mandate->save();
