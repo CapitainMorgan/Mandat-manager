@@ -27,21 +27,20 @@
             <bill-mandate :mandate_param="mandate_param"></bill-mandate>
         </b-modal>
 
+        <b-list-group>
+            <b-list-group-item :key="worktime.id" v-for="worktime in mandate_fees">
+                Le <strong v-text="dataFilter(worktime.start)"></strong><br>
+                De <strong v-text="dataFilterHour(worktime.start)"></strong> à <strong v-text="dataFilterHour(worktime.end)"></strong><br>            
+                Commentaire : <span v-text="worktime.comment"></span>  <br>   
+                Tarif : <span v-text="getPrice(worktime.idPrice)"></span> CHF/Heure <br> 
+                <b-list-group-item class="mb-1" :key="fee.id" v-for="fee in worktime.fees">
+                    Commentaire : <span v-text="fee.feesComment"></span> <br>
+                    Prix : <span v-text="fee.price"></span> CHF
+                </b-list-group-item>
+                <b-button v-on:click="editWorktime(worktime.id)" >Modifier</b-button> <b-button v-on:click="deleteWorktime(worktime.id)">Supprimer</b-button>
+                
 
-<b-list-group>
-        <b-list-group-item :key="worktime.id" v-for="worktime in mandate_fees">
-            Le <strong v-text="dataFilter(worktime.start)"></strong><br>
-            De <strong v-text="dataFilterHour(worktime.start)"></strong> à <strong v-text="dataFilterHour(worktime.end)"></strong><br>            
-            Commentaire : <span v-text="worktime.comment"></span>  <br>   
-            Tarif : <span v-text="getPrice(worktime.idPrice)"></span> CHF/Heure <br> 
-            <b-list-group-item class="mb-1" :key="fee.id" v-for="fee in worktime.fees">
-                Commentaire : <span v-text="fee.feesComment"></span> <br>
-                Prix : <span v-text="fee.price"></span> CHF
             </b-list-group-item>
-            <b-button v-on:click="editWorktime(worktime.id)" >Modifier</b-button> <b-button v-on:click="deleteWorktime(worktime.id)">Supprimer</b-button>
-            
-
-        </b-list-group-item>
         </b-list-group>
             
     </b-card>    
@@ -76,7 +75,7 @@ export default {
             this.loadWorkTime(); 
         });      
                 
-        },
+    },
     methods: {        
         deleteWorktime: function(id)
         {

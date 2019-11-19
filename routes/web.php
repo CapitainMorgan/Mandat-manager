@@ -15,7 +15,7 @@
 Auth::routes();
 Route::middleware('auth')->group(function () {
 
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'MandatController@index')->name('home');
 Route::get('/mandate', 'MandatController@index')->name('mandat');
 Route::get('/price', 'PriceController@index')->name('price');
 Route::get('/mandate/{mandate_id}', 'MandatController@show')->where('mandate_id', '[0-9]+');
