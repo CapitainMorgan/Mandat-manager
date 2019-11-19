@@ -23,7 +23,7 @@
             <b-button class="mt-2" variant="primary" v-b-modal.billModal>Générer une facture</b-button>
         </b-card-text>
 
-        <b-modal id="billModal" title="Facturation">
+        <b-modal id="billModal" title="Facturation" hide-footer>
             <bill-mandate :mandate_param="mandate_param"></bill-mandate>
         </b-modal>
 
