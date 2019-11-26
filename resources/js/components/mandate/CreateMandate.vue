@@ -14,8 +14,7 @@
         </b-form-group>
         <b-form-group id="dateGroup">
             <b-form-group id="startDateGroup" label="Début" label-for="startDate">
-                <b-form-input id="startDate" v-model="start" type="date">
-                </b-form-input>
+                <datepicker  id="startDate" v-model="start" :dayStr="dayStr" :scrollbarProps="{isMobile: isM}" />               
             </b-form-group>
             <b-form-group id="endDateGroup" label="Fin" label-for="endDate">
                 <b-form-input id="endDate" v-model="end" type="date">
@@ -57,7 +56,9 @@ export default {
                 description: '',
                 file: [],
                 showAlert: false,
-                modify: false
+                modify: false,
+                dayStr: ['1', '2', '3', '4', '5', '6','7'],
+                isM: isM,
             }
         },
         created : function(){

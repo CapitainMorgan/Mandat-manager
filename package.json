@@ -33,6 +33,7 @@
         "@fullcalendar/list": "^4.2.0",
         "@fullcalendar/timegrid": "^4.2.0",
         "@fullcalendar/vue": "^4.2.2",
+        "@livelybone/vue-datepicker": "^3.1.0",
         "bootstrap-vue": "^2.0.0-rc.27",
         "moment": "^2.24.0"
     }

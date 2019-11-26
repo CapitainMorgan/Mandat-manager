@@ -39,4 +39,5 @@ Route::get('/getFees/{worktime_id}',"MandatController@getFees")->where('worktime
 Route::get('/mandate/delete/{mandate_id}',"MandatController@deleteMandate")->where("mandate_id", '[0-9]+');
 Route::post('/price/new', "MandatController@createPrice");
 Route::post('/price/edit', "PriceController@editPrice");
+Route::post('/bill/{mandate_id}', "MandatController@createBillFiles")->where("mandate_id", '[0-9]+');;
 });

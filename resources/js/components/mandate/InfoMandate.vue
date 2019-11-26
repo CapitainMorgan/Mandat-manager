@@ -24,11 +24,11 @@
         </b-card-text>
 
         <b-modal id="billModal" title="Facturation" hide-footer>
-            <bill-mandate :mandate_param="mandate_param"></bill-mandate>
+            <bill-mandate :mandate_id="mandate.id"></bill-mandate>
         </b-modal>
 
         <b-list-group>
-            <b-list-group-item :key="worktime.id" v-for="worktime in mandate_fees">
+            <b-list-group-item dismissible :show="isShowed(worktime.id)" :key="worktime.id" v-for="worktime in mandate_fees">
                 Le <strong v-text="dataFilter(worktime.start)"></strong><br>
                 De <strong v-text="dataFilterHour(worktime.start)"></strong> à <strong v-text="dataFilterHour(worktime.end)"></strong><br>            
                 Commentaire : <span v-text="worktime.comment"></span>  <br>   
@@ -62,6 +62,9 @@ export default {
             users: null,
             alert: false,
             mandate_fees: null,
+            currentWortimeShow:0,
+            nbWorktimeToShow: 5,
+            sortBy:null,
         }
     },
     created: function() {
@@ -73,10 +76,15 @@ export default {
             this.prices = response.data;           
                          
             this.loadWorkTime(); 
-        });      
-                
+        });                
     },
-    methods: {        
+    methods: {     
+        isShowed(nbWorktime)
+        {
+            if(this.currentWortimeShow < nbWorktime && this.currentWortimeShow + this.nbWorktimeToShow >= nbWorktime)
+                return true;
+            return false;
+        },   
         deleteWorktime: function(id)
         {
             self = this;

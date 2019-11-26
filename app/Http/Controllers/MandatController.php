@@ -324,9 +324,11 @@ class MandatController extends Controller
 
     
 
-    public function createBillFiles(Request $request)
+    public function createBillFiles($mandate_id,Request $request)
     {
         $datas = $request->all();
+
+        
 
         //TODO génération du fichier word et excel
     }
