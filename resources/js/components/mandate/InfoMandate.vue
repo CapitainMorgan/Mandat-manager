@@ -25,7 +25,7 @@
         </b-card-text>
 
         <b-modal id="billModal" title="Facturation" hide-footer>
-            <bill-mandate :mandate_id="mandate.id"></bill-mandate>
+            <bill-mandate :mandate="mandate"></bill-mandate>
         </b-modal>
 
         <b-list-group>
