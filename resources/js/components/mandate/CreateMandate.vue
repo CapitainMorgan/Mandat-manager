@@ -12,19 +12,27 @@
             <b-form-input id="mandatName" v-model="name">
             </b-form-input>
         </b-form-group>
+        
         <b-form-group id="dateGroup">
             <b-form-group id="startDateGroup" label="Début" label-for="startDate">
-                <datepicker  id="startDate" v-model="start" :dayStr="dayStr" :scrollbarProps="{isMobile: isM}" />               
+                <b-form-input id="startDate" v-model="start" type="date">
+                </b-form-input>               
             </b-form-group>
             <b-form-group id="endDateGroup" label="Fin" label-for="endDate">
                 <b-form-input id="endDate" v-model="end" type="date">
                 </b-form-input>
-            </b-form-group>            
-            <b-from-group id="colorpickerlabel" label="Couleur" label-for="colorpicker">
-                <b-form-input id="colorpicker" v-model="color" type="color">
-                </b-form-input>
-            </b-from-group>
+            </b-form-group> 
         </b-form-group>
+        
+        <b-form-group id="colorpickerlabel" label="Couleur" label-for="colorpicker">
+            <b-form-input id="colorpicker" v-model="color" type="color">
+            </b-form-input>
+        </b-form-group>
+        <b-form-group id="tvalabel" label="TVA" label-for="tva">
+            <b-form-input id="tva" v-model="tva" type="number">
+            </b-form-input>
+        </b-form-group>
+
         <b-form-group id="descriptionGroup" label="Description" label-for="textarea">
             <b-form-textarea id="textarea" v-model="description" placeholder="Description" rows="3"></b-form-textarea>
         </b-form-group>
@@ -54,11 +62,10 @@ export default {
                 end: '',
                 color: '',
                 description: '',
+                tva: '',
                 file: [],
                 showAlert: false,
                 modify: false,
-                dayStr: ['1', '2', '3', '4', '5', '6','7'],
-                isM: isM,
             }
         },
         created : function(){
@@ -71,6 +78,7 @@ export default {
             this.color = my_var.color;
             this.start = this.dataFilter(my_var.start);
             this.end = this.dataFilter(my_var.end);
+            this.tva = my_var.TVA;
             if(this.end == undefined)
                 this.end = '';
             this.description = my_var.comment;
@@ -94,6 +102,7 @@ export default {
                     formData.append('color',this.color);
                     formData.append('description', this.description);
                     formData.append('files', this.file);
+                    formData.append('tva', this.tva);
 
                     axios.post('/mandate/update', formData, {
                         headers: {
@@ -105,7 +114,6 @@ export default {
                 }else{
                     let formData = new FormData();
 
-
                     this.file.forEach(function(single_file,i,){
                       formData.append('files['+i+']',single_file);
                     });
@@ -116,6 +124,7 @@ export default {
                     formData.append('color',this.color);
                     formData.append('description', this.description);
                     formData.append('files', this.file);
+                    formData.append('tva',this.tva);
 
                     axios.post('/mandate/store', formData, {
                         headers: {

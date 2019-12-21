@@ -13,6 +13,7 @@
                 <b-list-group-item><b>Créé :</b> {{ dataFilter(mandate.created_at) }}</b-list-group-item>
                 <b-list-group-item><b>Début :</b> {{ dataFilter(mandate.start) }}</b-list-group-item>
                 <b-list-group-item><b>Fin :</b> {{ dataFilter(mandate.end) }}</b-list-group-item>
+                <b-list-group-item><b>TVA :</b> {{ mandate.TVA }}</b-list-group-item>
                 <b-list-group-item><b>Couleur :</b> <span :style="'color:'+mandate.color+';'">{{ mandate.color }}</span></b-list-group-item>
                 <b-list-group-item><b>Commentaire :</b> {{mandate.comment}}</b-list-group-item>
             </b-list-group>
