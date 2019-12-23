@@ -24,14 +24,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 Vue.use(BootstrapVue);
 
 
-// import all
-import {Datepicker, Timepicker, DatetimePicker} from '@livelybone/vue-datepicker';
-
-// Global register
-Vue.component('datepicker', Datepicker);
-Vue.component('timepicker', Timepicker);
-Vue.component('datetime-picker', DatetimePicker);
-
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
