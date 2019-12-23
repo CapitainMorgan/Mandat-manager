@@ -76,7 +76,7 @@
                 if(this.form.address.start_date < this.form.address.end_date){
                     axios.post('/bill/' + this.mandate_.id, this.form).then(response => {
                         var link = document.getElementById('downlink');
-                        link.setAttribute("download","http://192.168.1.70/facture.docx");
+                        link.setAttribute("href","http://192.168.1.70/facture.docx");
                         link.click();
                     },error => {
                         alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")

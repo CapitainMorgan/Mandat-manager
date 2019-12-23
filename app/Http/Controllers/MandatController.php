@@ -354,11 +354,16 @@ class MandatController extends Controller
             $start = date_create($worktimes[$i]->start);
             $end = date_create($worktimes[$i]->end);
 
-          if($worktimes[$i]->start <= $address['end_date'] && $worktimes[$i]->start >= $address['start_date']){
-            $price = Price::where('id',$worktimes[$i]->idPrice)->first();
-            
+            $startM = date_create($address['start_date']);
+            $endM = date_create($address['end_date']);
+            $endM->modify("+1 day");
 
-            $nbHour = date_diff($start, $end)->format('%h') + date_diff($start, $end)->format('%i') / 60;
+          if($startM <= $start && $end <= $endM){
+
+            $price = Price::where('id',$worktimes[$i]->idPrice)->first();            
+
+            $nbHour = date_diff($start, $end)->format('%h');
+            $nbHour += date_diff($start, $end)->format('%i') / 60;
 
             $total += $nbHour * $price->price;
 
