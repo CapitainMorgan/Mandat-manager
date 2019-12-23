@@ -29,7 +29,7 @@
             </b-form-input>
         </b-form-group>
         <b-form-group id="tvalabel" label="TVA" label-for="tva">
-            <b-form-input id="tva" v-model="tva" type="number">
+            <b-form-input id="tva" v-model="tva" type="number" step=".01">
             </b-form-input>
         </b-form-group>
 
