@@ -55,11 +55,6 @@
             {
                 alert("Le champs TVA est vide. Merci de le remplir avant de continuer");
                 this.disabled = true;
-            }
-            if(this.mandate_.end == null)
-            {
-                alert("Le champs date de fin est vide. Merci de le remplir avant de continuer");
-                this.disabled = true;
             }else{
                 this.form.address.start_date = this.dataFilter(this.mandate_.start);
                 this.form.address.end_date = this.dataFilter(this.mandate_.end);
