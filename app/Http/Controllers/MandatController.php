@@ -9,8 +9,7 @@ use App\Price;
 use App\Fees;
 use App\WorkTime;
 use PhpOffice\PhpWord\PhpWord;
-
-
+use PhpParser\Parser\Php5;
 
 class MandatController extends Controller
 {
@@ -375,9 +374,11 @@ class MandatController extends Controller
         $document->setValue('TVA_TOTAL', $totalTVA);
         $document->setValue('TOTAL', $totalTVA + $total);
 
-        $document->saveAs('test.docx'); 
+        $temp_file = "facture.docx";
+        
+        $document->saveAs($temp_file); 
 
-        //TODO génération du fichier word et excel
+        //TODO génération du fichier  excel
     }
     
 

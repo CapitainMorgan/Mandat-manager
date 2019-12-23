@@ -26,6 +26,7 @@
 
         </b-card-text>
     </b-card>
+    <a href="" id="downlink" style="display:none;" download=""></a>
     </div>
 </template>
 
@@ -74,7 +75,9 @@
             generateBill: function(){
                 if(this.form.address.start_date < this.form.address.end_date){
                     axios.post('/bill/' + this.mandate_.id, this.form).then(response => {
-                        //location.reload();
+                        var link = document.getElementById('downlink');
+                        link.setAttribute("download","facture.docx");
+                        link.click();
                     },error => {
                         alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
                     });  
