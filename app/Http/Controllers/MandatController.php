@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Mandate;
-use App\Workon;
 use App\Price;
 use App\Fees;
 use App\WorkTime;
+use PhpOffice\PhpWord\PhpWord;
+
+
 
 class MandatController extends Controller
 {
@@ -324,13 +326,56 @@ class MandatController extends Controller
       return json_encode(true);
     }
 
-    
+       
 
     public function createBillFiles($mandate_id,Request $request)
     {
         $datas = $request->all();
 
+        $address = $datas['address'];
+
+        $phpWord = new PhpWord;
+
+        $document = $phpWord->loadTemplate('..\storage\baseFile\Word_Bill_Base.docx');
+
+        $document->setValue('Nom', $address['name']);
+        $document->setValue('Chemin',  $address['street']);
+        $document->setValue('Localite',  $address['locality']);
+        $document->setValue('date', date("d.m.Y"));
+        $document->setValue('periode', 'du ' .  date("d.m.Y", strtotime($address['start_date'])) . ' au ' . date("d.m.Y", strtotime($address['end_date'])));
         
+        $mandate = Mandate::where('id',$mandate_id)->first();
+
+        $total = 0;
+
+        $worktimes = WorkTime::where('idMandate',$mandate_id)->get();
+
+        for($i = 0;$i < count($worktimes);$i++)
+        {
+          $price = Price::where('id',$worktimes[$i]->idPrice)->first();
+
+          $start = date_create($worktimes[$i]->start);
+          $end = date_create($worktimes[$i]->end);
+
+          $nbHour = date_diff($start, $end)->format('%h') + date_diff($start, $end)->format('%i') / 60;
+
+          $total += $nbHour * $price->price;
+
+          $fees = Fees::where('idWorktime', $worktimes[$i]->id)->get();
+          for($y = 0; $y < count($fees);$y++)
+          {
+            $total += $fees[$y]->price;
+          }
+        }
+
+        $totalTVA = $total * ($mandate->TVA/100);
+
+        $document->setValue('TARIF_TOTAL', $total);
+        $document->setValue('TVA', $mandate->TVA);
+        $document->setValue('TVA_TOTAL', $totalTVA);
+        $document->setValue('TOTAL', $totalTVA + $total);
+
+        $document->saveAs('test.docx'); 
 
         //TODO génération du fichier word et excel
     }

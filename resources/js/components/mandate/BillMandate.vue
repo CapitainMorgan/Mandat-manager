@@ -3,14 +3,14 @@
         <b-card header="Adresse de facturation" class="mt-2 ">
         <b-card-text>
             <b-form @submit.prevent="generateBill() ">
-                <b-form-group id="input-group-1 " label="Nom : " label-for="input-price " description="Entrez le nom du client ">
-                    <b-form-input id="input-price " v-model="form.address.name " type="text" required step="0.05 "></b-form-input>
+                <b-form-group id="input-group-1 " label="Nom : " label-for="input-name " description="Entrez le nom du client ">
+                    <b-form-input id="input-name" v-model="form.address.name " type="text" required step="0.05 "></b-form-input>
                 </b-form-group>
-                <b-form-group id="input-group-2 " label="Chemin : " label-for="input-price-name " description="Entrez le chemin ">
-                    <b-form-input id="input-price-name " v-model="form.address.street " type="text"></b-form-input>
+                <b-form-group id="input-group-2 " label="Chemin : " label-for="input-street " description="Entrez le chemin ">
+                    <b-form-input id="input-street " v-model="form.address.street " type="text"></b-form-input>
                 </b-form-group>
-                <b-form-group id="input-group-2 " label="Localité : " label-for="input-price-name " description="Entrez la localité">
-                    <b-form-input id="input-price-name " v-model="form.address.locality " type="text"></b-form-input>
+                <b-form-group id="input-group-2 " label="Localité : " label-for="input-locality " description="Entrez la localité">
+                    <b-form-input id="input-locality " v-model="form.address.locality " type="text"></b-form-input>
                 </b-form-group>
                 <b-form-group id="startDateGroup" label="Début" label-for="startDate">
                     <b-form-input id="startDate" v-model="form.address.start_date" type="date">
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     
     export default {  
         props: ['mandate'],      
@@ -71,16 +72,15 @@
                 }
             },
             generateBill: function(){
-                if(this.form.address.end_date <= this.mandate_.end && this.form.address.start_date >= this.mandate_.start 
-                && this.form.address.start_date < this.form.address.end_date){
-                    axios.post('/bill/' + this.mandate_.id, this.address).then(response => {
-                        location.reload();
+                if(this.form.address.start_date < this.form.address.end_date){
+                    axios.post('/bill/' + this.mandate_.id, this.form).then(response => {
+                        //location.reload();
                     },error => {
                         alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
                     });  
                 }
                 else{
-                    alert("Les dates doivent être compris dans les dates du mandat et la date de fin doit être après la date de début.")
+                    alert("La date de fin doit être après la date de début.")
                 }
             },
         },
