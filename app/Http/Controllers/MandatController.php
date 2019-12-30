@@ -9,7 +9,8 @@ use App\Price;
 use App\Fees;
 use App\WorkTime;
 use PhpOffice\PhpWord\PhpWord;
-use PhpParser\Parser\Php5;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class MandatController extends Controller
 {
@@ -335,7 +336,7 @@ class MandatController extends Controller
 
         $phpWord = new PhpWord;
 
-        $document = $phpWord->loadTemplate('..\storage\baseFile\Word_Bill_Base.docx');
+        $document = $phpWord->loadTemplate('../storage/baseFile/Word_Bill_Base.docx');
 
         $document->setValue('Nom', $address['name']);
         $document->setValue('Chemin',  $address['street']);
@@ -379,14 +380,80 @@ class MandatController extends Controller
 
         $document->setValue('TARIF_TOTAL', $total);
         $document->setValue('TVA', $mandate->TVA);
-        $document->setValue('TVA_TOTAL', $totalTVA);
-        $document->setValue('TOTAL', $totalTVA + $total);
+        $document->setValue('TVA_TOTAL', round($totalTVA/0.05)*0.05);
+        $document->setValue('TOTAL', round($totalTVA + $total/0.05)*0.05);
 
         $temp_file = "facture.docx";
         
-        $document->saveAs($temp_file); 
+        $document->saveAs("storage/".$temp_file); 
 
-        //TODO génération du fichier  excel
+        //génération du fichier  excel
+
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Décompte '.$mandate->name);
+        $sheet->setCellValue('A3', 'Période du '.date("d.m.Y", strtotime($address['start_date'])).' à '.date("d.m.Y", strtotime($address['end_date'])));
+        $sheet->setCellValue('A3','Quand');
+        $sheet->setCellValue('B3','Description');
+        $sheet->setCellValue('C3','Nbre heure');
+        $sheet->setCellValue('D3','prix/unité');
+        $sheet->setCellValue('E3','Total');
+        $sheet->setCellValue('G3','Frais');
+        $sheet->setCellValue('H3','Nb.');
+        $sheet->setCellValue('I3','CHF');
+        $sheet->setCellValue('J3','Total CHF');
+
+        $nbFrais = 0;
+        $startLine = 5;
+        
+
+        for($i = 0;$i < count($worktimes);$i++)
+        {
+          $start = date_create($worktimes[$i]->start);
+          $end = date_create($worktimes[$i]->end);
+
+          $startM = date_create($address['start_date']);
+          $endM = date_create($address['end_date']);
+          $endM->modify("+1 day");
+
+          if($startM <= $start && $end <= $endM){
+
+            $sheet->setCellValue('A'.($i+$startLine+$nbFrais),date("d.m.Y", strtotime($worktimes[$i]->start)));
+           
+            $sheet->setCellValue('B'.($i+$startLine+$nbFrais),$worktimes[$i]->name);
+
+            $price = Price::where('id',$worktimes[$i]->idPrice)->first();  
+            
+            $nbHour = date_diff($start, $end)->format('%h');
+            $nbHour += date_diff($start, $end)->format('%i') / 60;
+
+            $sheet->setCellValue('C'.($i+$startLine+$nbFrais),$nbHour);
+
+            $sheet->setCellValue('D'.($i+$startLine+$nbFrais),$price->$price);
+
+            $sheet->setCellValue('E'.($i+$startLine+$nbFrais),'=D'.($i+$startLine+$nbFrais).'*C'.($i+$startLine+$nbFrais));
+
+            $fees = Fees::where('idWorktime', $worktimes[$i]->id)->get();
+            for($y = 0; $y < count($fees);$y++)
+            {
+
+
+              if($y != 0)
+                $nbFrais++;
+            }
+
+          }
+        }
+
+
+        $temp_fileE = "facture.xlsx";
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('storage/'.$temp_fileE);
+
+
     }
     
 
