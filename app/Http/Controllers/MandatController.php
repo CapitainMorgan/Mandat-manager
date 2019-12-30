@@ -407,9 +407,10 @@ class MandatController extends Controller
 
         $nbFrais = 0;
         $startLine = 5;
+        $i = 0;
         
 
-        for($i = 0;$i < count($worktimes);$i++)
+        for(;$i < count($worktimes);$i++)
         {
           $start = date_create($worktimes[$i]->start);
           $end = date_create($worktimes[$i]->end);
@@ -422,7 +423,7 @@ class MandatController extends Controller
 
             $sheet->setCellValue('A'.($i+$startLine+$nbFrais),date("d.m.Y", strtotime($worktimes[$i]->start)));
            
-            $sheet->setCellValue('B'.($i+$startLine+$nbFrais),$worktimes[$i]->name);
+            $sheet->setCellValue('B'.($i+$startLine+$nbFrais),$worktimes[$i]->comment);
 
             $price = Price::where('id',$worktimes[$i]->idPrice)->first();  
             
@@ -431,7 +432,7 @@ class MandatController extends Controller
 
             $sheet->setCellValue('C'.($i+$startLine+$nbFrais),$nbHour);
 
-            $sheet->setCellValue('D'.($i+$startLine+$nbFrais),$price->$price);
+            $sheet->setCellValue('D'.($i+$startLine+$nbFrais),$price->price);
 
             $sheet->setCellValue('E'.($i+$startLine+$nbFrais),'=D'.($i+$startLine+$nbFrais).'*C'.($i+$startLine+$nbFrais));
 
@@ -447,6 +448,12 @@ class MandatController extends Controller
           }
         }
 
+
+        $sheet->setCellValue('B'.($i+$startLine+$nbFrais+2),'Total');
+
+        //$sheet->setCellValue('C'.($i+$startLine+$nbFrais+2),'=SOMME(C5:C'.($i+$startLine+$nbFrais).')');
+
+        //$sheet->setCellValue('E'.($i+$startLine+$nbFrais+2),'=SOMME(E5:E'.($i+$startLine+$nbFrais).')');
 
         $temp_fileE = "facture.xlsx";
 
