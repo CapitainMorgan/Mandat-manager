@@ -472,7 +472,7 @@ class MandatController extends Controller
         $spreadsheet->getActiveSheet()->getCell('H'.($i+$startLine+$nbFrais+2))
         ->getStyle()->setQuotePrefix(true); 
 
-        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=ARRONDI.AU.MULTIPLE(H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2).')');
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=ARRONDI.AU.MULTIPLE(H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2).';0,05)');
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+2))
         ->getStyle()->setQuotePrefix(true); 
@@ -482,7 +482,7 @@ class MandatController extends Controller
         $spreadsheet->getActiveSheet()->getCell('G'.($i+$startLine+$nbFrais+5))
         ->getStyle()->setQuotePrefix(true); 
 
-        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+5),'=ARRONDI.AU.MULTIPLE(I'.($i+$startLine+$nbFrais+2).'*'.($mandate->TVA/100).')');
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+5),'=ARRONDI.AU.MULTIPLE(I'.($i+$startLine+$nbFrais+2).'*'.($mandate->TVA/100).';0,05)');
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+5))
         ->getStyle()->setQuotePrefix(true); 
