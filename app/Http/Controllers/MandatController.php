@@ -475,7 +475,9 @@ class MandatController extends Controller
         $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2));
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+2))
-        ->getStyle()->setQuotePrefix(true); 
+        ->getStyle()->setQuotePrefix(true);
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+2))->getNumberFormat()
+        ->setFormatCode('0.00');
 
         $sheet->setCellValue('G'.($i+$startLine+$nbFrais+5),'Total TVA '.$mandate->TVA.'%');
         $sheet->getStyle('G'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
@@ -486,16 +488,21 @@ class MandatController extends Controller
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+5))
         ->getStyle()->setQuotePrefix(true); 
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+5))->getNumberFormat()
+        ->setFormatCode('0.00');
 
         $sheet->setCellValue('E'.($i+$startLine+$nbFrais+7),'Grand Total');
         $sheet->getStyle('E'.($i+$startLine+$nbFrais+7))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('E'.($i+$startLine+$nbFrais+7))
         ->getStyle()->setQuotePrefix(true); 
+        
 
-        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+7),'=ARRONDI.AU.MULTIPLE(I'.($i+$startLine+$nbFrais+2).'+I'.($i+$startLine+$nbFrais+5).';0,05)');
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+7),'=I'.($i+$startLine+$nbFrais+2).'+I'.($i+$startLine+$nbFrais+5));
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+7))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+7))
         ->getStyle()->setQuotePrefix(true); 
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+7))->getNumberFormat()
+        ->setFormatCode('0.00');
 
         foreach(range('A','H') as $columnID) {
           $sheet->getColumnDimension($columnID)
