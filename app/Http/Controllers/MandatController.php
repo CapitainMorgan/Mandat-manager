@@ -11,6 +11,7 @@ use App\WorkTime;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
 class MandatController extends Controller
 {
@@ -393,17 +394,22 @@ class MandatController extends Controller
 
         $sheet = $spreadsheet->getActiveSheet();
 
+        $spreadsheet->getDefaultStyle()->getFont()->setName('Verdana');
+        
+
         $sheet->setCellValue('A1', 'Décompte '.$mandate->name);
+        $sheet->getStyle('A1')->getFont()->setSize(12)->setBold( true );
         $sheet->setCellValue('A3', 'Période du '.date("d.m.Y", strtotime($address['start_date'])).' à '.date("d.m.Y", strtotime($address['end_date'])));
+        $sheet->getStyle('A3')->getFont()->setBold( true );
         $sheet->setCellValue('A3','Quand');
         $sheet->setCellValue('B3','Description');
         $sheet->setCellValue('C3','Nbre heure');
         $sheet->setCellValue('D3','prix/unité');
         $sheet->setCellValue('E3','Total');
         $sheet->setCellValue('G3','Frais');
-        $sheet->setCellValue('H3','Nb.');
-        $sheet->setCellValue('I3','CHF');
-        $sheet->setCellValue('J3','Total CHF');
+        $sheet->setCellValue('H3','CHF');
+        $sheet->setCellValue('I3','Total CHF');
+        $sheet->getStyle('I3')->getFont()->setBold( true );
 
         $nbFrais = 0;
         $startLine = 5;
@@ -439,21 +445,62 @@ class MandatController extends Controller
             $fees = Fees::where('idWorktime', $worktimes[$i]->id)->get();
             for($y = 0; $y < count($fees);$y++)
             {
-
-
               if($y != 0)
                 $nbFrais++;
+              $sheet->setCellValue('G'.($i+$startLine+$nbFrais),$fees[$y]->feesComment);
+              $sheet->setCellValue('H'.($i+$startLine+$nbFrais),$fees[$y]->price);
+              
             }
 
           }
         }
 
-
         $sheet->setCellValue('B'.($i+$startLine+$nbFrais+2),'Total');
+        $sheet->getStyle('B'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
 
-        //$sheet->setCellValue('C'.($i+$startLine+$nbFrais+2),'=SOMME(C5:C'.($i+$startLine+$nbFrais).')');
+        $sheet->setCellValue('C'.($i+$startLine+$nbFrais+2),'=SOMME(C5:C'.($i+$startLine+$nbFrais).')');
+        $spreadsheet->getActiveSheet()->getCell('C'.($i+$startLine+$nbFrais+2))
+        ->getStyle()->setQuotePrefix(true); 
 
-        //$sheet->setCellValue('E'.($i+$startLine+$nbFrais+2),'=SOMME(E5:E'.($i+$startLine+$nbFrais).')');
+        $sheet->setCellValue('E'.($i+$startLine+$nbFrais+2),'=SOMME(E5:E'.($i+$startLine+$nbFrais).')');
+        $sheet->getStyle('E'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('E'.($i+$startLine+$nbFrais+2))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('H'.($i+$startLine+$nbFrais+2),'=SOMME(H5:H'.($i+$startLine+$nbFrais).')');
+        $sheet->getStyle('H'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('H'.($i+$startLine+$nbFrais+2))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2));
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+2))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('G'.($i+$startLine+$nbFrais+5),'Total TVA '.$mandate->TVA.'%');
+        $sheet->getStyle('G'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('G'.($i+$startLine+$nbFrais+5))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+5),'=I'.($i+$startLine+$nbFrais+2).'*'.($mandate->TVA/100));
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+5))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('E'.($i+$startLine+$nbFrais+7),'Grand Total');
+        $sheet->getStyle('E'.($i+$startLine+$nbFrais+7))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('E'.($i+$startLine+$nbFrais+7))
+        ->getStyle()->setQuotePrefix(true); 
+
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+7),'=I'.($i+$startLine+$nbFrais+2).'+I'.($i+$startLine+$nbFrais+5));
+        $sheet->getStyle('I'.($i+$startLine+$nbFrais+7))->getFont()->setBold( true );
+        $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+7))
+        ->getStyle()->setQuotePrefix(true); 
+
+        foreach(range('A','H') as $columnID) {
+          $sheet->getColumnDimension($columnID)
+              ->setAutoSize(true);
+       }
 
         $temp_fileE = "facture.xlsx";
 
