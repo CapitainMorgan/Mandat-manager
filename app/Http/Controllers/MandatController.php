@@ -382,7 +382,7 @@ class MandatController extends Controller
         $document->setValue('TARIF_TOTAL', $total);
         $document->setValue('TVA', $mandate->TVA);
         $document->setValue('TVA_TOTAL', round($totalTVA/0.05)*0.05);
-        $document->setValue('TOTAL', round($totalTVA + $total/0.05)*0.05);
+        $document->setValue('TOTAL', round(($totalTVA + $total)/0.05)*0.05);
 
         $temp_file = "facture.docx";
         
@@ -472,7 +472,7 @@ class MandatController extends Controller
         $spreadsheet->getActiveSheet()->getCell('H'.($i+$startLine+$nbFrais+2))
         ->getStyle()->setQuotePrefix(true); 
 
-        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2));
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+2),'=ARRONDI.AU.MULTIPLE(H'.($i+$startLine+$nbFrais+2).'+E'.($i+$startLine+$nbFrais+2).')');
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+2))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+2))
         ->getStyle()->setQuotePrefix(true); 
@@ -482,7 +482,7 @@ class MandatController extends Controller
         $spreadsheet->getActiveSheet()->getCell('G'.($i+$startLine+$nbFrais+5))
         ->getStyle()->setQuotePrefix(true); 
 
-        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+5),'=I'.($i+$startLine+$nbFrais+2).'*'.($mandate->TVA/100));
+        $sheet->setCellValue('I'.($i+$startLine+$nbFrais+5),'=ARRONDI.AU.MULTIPLE(I'.($i+$startLine+$nbFrais+2).'*'.($mandate->TVA/100).')');
         $sheet->getStyle('I'.($i+$startLine+$nbFrais+5))->getFont()->setBold( true );
         $spreadsheet->getActiveSheet()->getCell('I'.($i+$startLine+$nbFrais+5))
         ->getStyle()->setQuotePrefix(true); 
