@@ -77,12 +77,14 @@
 
 import moment from 'moment'
 
-export default {
+export default {    
     created: function() {
         axios.get('/price/all').then(response => {
             this.prices = response.data;
             this.sortedArray();
         });
+        this.form.worktime.start = moment().format('YYYY-MM-DD') + "T00:00";
+        this.form.worktime.end = moment().format('YYYY-MM-DD') + "T00:00";
     },
     props: ['mandate_id','calendar'],    
     data() {
@@ -111,6 +113,8 @@ export default {
         this.getAllMandate();
         if(calendar)
             this.form.mandate_id = null;
+
+        
     },
     computed: {
         sortedArray: function() {
@@ -123,7 +127,7 @@ export default {
             }
 
             return this.prices.sort(compare);
-        }
+        }        
     },
     methods: {
         submitFees: function() {
