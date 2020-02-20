@@ -1,19 +1,22 @@
 <template>
     <div class="container mt-2">
         <b-card header="Tarifs">
+            <div class="overflow-auto">
+                <b-pagination-nav :number-of-pages="numPage" use-router align="center"></b-pagination-nav>
+            </div>
             <b-alert :show="alert" dismissible>
                 Tarif modifié.
             </b-alert>
-            <b-list-group-item :key="price.id" v-for="price in prices">
-                <b-form @submit.prevent="editPrice(price) ">
-                <b-form-group id="input-group-1 " label="Prix : " label-for="input-price " description="Entrez votre prix ">
-                    <b-form-input id="input-price " v-model="price.price" type="number" required step="0.05 "></b-form-input>
-                </b-form-group>
-                <b-form-group id="input-group-2 " label="Nom : " label-for="input-price-name " description="Entrez le nom de ce tarif ">
-                    <b-form-input id="input-price-name " v-model="price.name" type="text"></b-form-input>
-                </b-form-group>
-                <b-button class="mt-2 " variant="primary " type="submit">Modifier</b-button>                
-            </b-form>
+            <b-list-group-item :key="price.id" v-for="(price,index) in prices"  v-if="(index >= currentPos && index < currentPos+nbShow)">
+                <b-form @submit.prevent="editPrice(price)">
+                    <b-form-group id="input-group-1 " label="Prix : " label-for="input-price " description="Entrez votre prix " :show="(index >= currentPos && index < currentPos+nbShow)">
+                        <b-form-input id="input-price " v-model="price.price" type="number" required step="0.05 "></b-form-input>
+                    </b-form-group>
+                    <b-form-group id="input-group-2 " label="Nom : " label-for="input-price-name " description="Entrez le nom de ce tarif ">
+                        <b-form-input id="input-price-name " v-model="price.name" type="text"></b-form-input>
+                    </b-form-group>
+                    <b-button class="mt-2 " variant="primary " type="submit">Modifier</b-button>                
+                </b-form>
             </b-list-group-item>
         </b-card>   
 
@@ -41,6 +44,9 @@
             return {
                 prices: this.price_param,
                 alert: false,
+                nbShow: 5,
+                currentPos: 0,
+                numPage:0,
                 form: {                
                     price: {
                         price: '',
@@ -53,7 +59,8 @@
             
         },
         mounted() {
-            this.sortedArray();
+            this.sortedArray(); 
+            this.numPage = Math.ceil(this.prices.length / this.nbShow);           
         },
         methods:{
             sortedArray: function() {
@@ -77,7 +84,7 @@
             submitPrice: function(){
                 self = this;
                 axios.post('/price/new', this.form).then(response => {
-                    location.href = "/price";
+                    location.href = "/price";                    
                 },error => {
                         alert("Une erreur est survenue ! Vérifier que tous les champs sont remplis. Sinon merci de contacter l'adiminstrateur.")
                 },self);
