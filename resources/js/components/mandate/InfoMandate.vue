@@ -33,7 +33,7 @@
                 <b-button-group>
                     <b-button v-on:click="goToFirst()" variant="light">Début</b-button>
                     <b-button v-on:click="goToBefore()" variant="light">Avant</b-button>
-                    <b-button :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
+                    <b-button :id="i" :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
                     <b-button v-on:click="goToNext()" variant="light">Après</b-button>
                     <b-button v-on:click="goToLast()" variant="light">Fin</b-button>
                 </b-button-group>
@@ -74,6 +74,7 @@ export default {
             mandate_fees: null,
             currentWortimeShow:0,
             nbWorktimeToShow: 5,
+            lastId:1,
             nbPage:0,
             sortBy:null,
         }
@@ -87,30 +88,45 @@ export default {
             this.prices = response.data;           
                          
             this.loadWorkTime(); 
-        });                
+        });              
+    },
+    mounted: function(){
+        
     },
     methods: {  
         goTo(index)
         {
-            this.currentWortimeShow = (index-1) * this.nbWorktimeToShow;                
+            this.currentWortimeShow = (index-1) * this.nbWorktimeToShow;   
+            this.updateButtonPage();           
         },
         goToFirst()
         {
             this.currentWortimeShow = 0;
+            this.updateButtonPage();
         },
         goToLast()
         {
             this.currentWortimeShow = (this.nbPage -1) * this.nbWorktimeToShow;
+            this.updateButtonPage();
         },
         goToBefore()
         {
             if(this.currentWortimeShow != 0)
                 this.currentWortimeShow -= this.nbWorktimeToShow;
+            this.updateButtonPage();
         },
         goToNext()
         {
             if(this.currentWortimeShow != (this.nbPage -1) * this.nbWorktimeToShow)
                 this.currentWortimeShow += this.nbWorktimeToShow;
+
+            this.updateButtonPage();
+        },
+        updateButtonPage()
+        {
+            document.getElementById(this.lastId).style = "font-weight: normal;";
+            document.getElementById(this.currentWortimeShow / this.nbWorktimeToShow + 1).style = "font-weight: bold;";
+            this.lastId = this.currentWortimeShow / this.nbWorktimeToShow + 1;
         },
         deleteWorktime: function(id)
         {
@@ -151,9 +167,10 @@ export default {
                             self.mandate_fees[listId.indexOf(self.mandate_worktime[i].id)].fees.push({id:self.mandate_worktime[i].idFees,feesComment:self.mandate_worktime[i].feesComment,price:self.mandate_worktime[i].price,});
                         }
                     }                    
-                }
-                                                
-            },self);
+                }                                              
+            },self).then(response => {                
+                this.updateButtonPage();  
+            });
         },
         getPrice: function(price_id)
         {

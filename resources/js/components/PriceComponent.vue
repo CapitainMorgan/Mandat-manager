@@ -5,7 +5,7 @@
                 <b-button-group>
                     <b-button v-on:click="goToFirst()" variant="light">Début</b-button>
                     <b-button v-on:click="goToBefore()" variant="light">Avant</b-button>
-                    <b-button :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
+                    <b-button :id="i" :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
                     <b-button v-on:click="goToNext()" variant="light">Après</b-button>
                     <b-button v-on:click="goToLast()" variant="light">Fin</b-button>
                 </b-button-group>
@@ -53,6 +53,7 @@
                 nbShow: 5,
                 currentPos: 0,
                 nbPage:0,
+                lastId:1,
                 form: {                
                     price: {
                         price: '',
@@ -64,32 +65,47 @@
         computed: {
             
         },
+        created: function(){
+            
+            this.nbPage = Math.ceil(this.prices.length / this.nbShow);  
+        },
         mounted() {
             this.sortedArray(); 
-            this.nbPage = Math.ceil(this.prices.length / this.nbShow);           
+            this.updateButtonPage();                     
         },
         methods:{
             goTo(index)
             {
-                this.currentPos = (index-1) * this.nbShow;                
+                this.currentPos = (index-1) * this.nbShow;     
+                this.updateButtonPage();           
             },
             goToFirst()
             {
                 this.currentPos = 0;
+                this.updateButtonPage();
             },
             goToLast()
             {
                 this.currentPos = (this.nbPage -1) * this.nbShow;
+                this.updateButtonPage();
             },
             goToBefore()
             {
                 if(this.currentPos != 0)
                     this.currentPos -= this.nbShow;
+                    this.updateButtonPage();
             },
             goToNext()
             {
                 if(this.currentPos != (this.nbPage -1) * this.nbShow)
                     this.currentPos += this.nbShow;
+                this.updateButtonPage();
+            },
+            updateButtonPage()
+            {
+                document.getElementById(this.lastId).style = "font-weight: normal;";
+                document.getElementById(this.currentPos / this.nbShow + 1).style = "font-weight: bold;";
+                this.lastId = this.currentPos / this.nbShow + 1;
             },
             sortedArray: function() {
                 function compare(a, b) {
