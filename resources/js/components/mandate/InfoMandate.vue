@@ -29,7 +29,16 @@
         </b-modal>
 
         <b-list-group>
-            <b-list-group-item dismissible :show="isShowed(worktime.id)" :key="worktime.id" v-for="worktime in mandate_fees">
+            <div class="overflow-auto" align="center" style="margin-bottom:10px;">
+                <b-button-group>
+                    <b-button v-on:click="goToFirst()" variant="light">Début</b-button>
+                    <b-button v-on:click="goToBefore()" variant="light">Avant</b-button>
+                    <b-button :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
+                    <b-button v-on:click="goToNext()" variant="light">Après</b-button>
+                    <b-button v-on:click="goToLast()" variant="light">Fin</b-button>
+                </b-button-group>
+            </div>
+            <b-list-group-item dismissible :key="worktime.id" v-for="(worktime,index) in mandate_fees" v-if="(index >= currentWortimeShow && index < currentWortimeShow+nbWorktimeToShow)">
                 Le <strong v-text="dataFilter(worktime.start)"></strong><br>
                 De <strong v-text="dataFilterHour(worktime.start)"></strong> à <strong v-text="dataFilterHour(worktime.end)"></strong><br>            
                 Commentaire : <span v-text="worktime.comment"></span>  <br>   
@@ -65,6 +74,7 @@ export default {
             mandate_fees: null,
             currentWortimeShow:0,
             nbWorktimeToShow: 5,
+            nbPage:0,
             sortBy:null,
         }
     },
@@ -79,13 +89,29 @@ export default {
             this.loadWorkTime(); 
         });                
     },
-    methods: {     
-        isShowed(nbWorktime)
+    methods: {  
+        goTo(index)
         {
-            if(this.currentWortimeShow < nbWorktime && this.currentWortimeShow + this.nbWorktimeToShow >= nbWorktime)
-                return true;
-            return false;
-        },   
+            this.currentWortimeShow = (index-1) * this.nbWorktimeToShow;                
+        },
+        goToFirst()
+        {
+            this.currentWortimeShow = 0;
+        },
+        goToLast()
+        {
+            this.currentWortimeShow = (this.nbPage -1) * this.nbWorktimeToShow;
+        },
+        goToBefore()
+        {
+            if(this.currentWortimeShow != 0)
+                this.currentWortimeShow -= this.nbWorktimeToShow;
+        },
+        goToNext()
+        {
+            if(this.currentWortimeShow != (this.nbPage -1) * this.nbWorktimeToShow)
+                this.currentWortimeShow += this.nbWorktimeToShow;
+        },
         deleteWorktime: function(id)
         {
             self = this;
@@ -105,6 +131,7 @@ export default {
                 var index = 0;
                 var listId = [];
                 self.mandate_fees = [];
+                self.nbPage = Math.ceil(self.mandate_worktime.length / self.nbWorktimeToShow);
                 for(var i = 0; i < self.mandate_worktime.length;i++)
                 {
                     if(!listId.includes(self.mandate_worktime[i].id))

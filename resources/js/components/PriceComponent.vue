@@ -1,8 +1,14 @@
 <template>
     <div class="container mt-2">
         <b-card header="Tarifs">
-            <div class="overflow-auto">
-                <b-pagination-nav :number-of-pages="numPage" use-router align="center"></b-pagination-nav>
+            <div class="overflow-auto" align="center" style="margin-bottom:10px;">
+                <b-button-group>
+                    <b-button v-on:click="goToFirst()" variant="light">Début</b-button>
+                    <b-button v-on:click="goToBefore()" variant="light">Avant</b-button>
+                    <b-button :key="i" v-for="i in nbPage" v-on:click="goTo(i)" variant="light">{{i}}</b-button>
+                    <b-button v-on:click="goToNext()" variant="light">Après</b-button>
+                    <b-button v-on:click="goToLast()" variant="light">Fin</b-button>
+                </b-button-group>
             </div>
             <b-alert :show="alert" dismissible>
                 Tarif modifié.
@@ -46,7 +52,7 @@
                 alert: false,
                 nbShow: 5,
                 currentPos: 0,
-                numPage:0,
+                nbPage:0,
                 form: {                
                     price: {
                         price: '',
@@ -60,9 +66,31 @@
         },
         mounted() {
             this.sortedArray(); 
-            this.numPage = Math.ceil(this.prices.length / this.nbShow);           
+            this.nbPage = Math.ceil(this.prices.length / this.nbShow);           
         },
         methods:{
+            goTo(index)
+            {
+                this.currentPos = (index-1) * this.nbShow;                
+            },
+            goToFirst()
+            {
+                this.currentPos = 0;
+            },
+            goToLast()
+            {
+                this.currentPos = (this.nbPage -1) * this.nbShow;
+            },
+            goToBefore()
+            {
+                if(this.currentPos != 0)
+                    this.currentPos -= this.nbShow;
+            },
+            goToNext()
+            {
+                if(this.currentPos != (this.nbPage -1) * this.nbShow)
+                    this.currentPos += this.nbShow;
+            },
             sortedArray: function() {
                 function compare(a, b) {
                 if (a.name < b.name)
