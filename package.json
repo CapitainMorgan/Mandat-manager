@@ -35,6 +35,6 @@
         "@fullcalendar/vue": "^4.2.2",
         "@livelybone/vue-datepicker": "^3.1.0",
         "bootstrap-vue": "^2.1.0",
-        "moment": "^2.24.0"
+        "moment": "^2.29.4"
     }
 }
